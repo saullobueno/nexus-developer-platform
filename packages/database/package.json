@@ -16,6 +16,7 @@
     "db:seed": "tsx src/seed-cli.ts"
   },
   "dependencies": {
+    "bcryptjs": "^3.0.0",
     "drizzle-orm": "^0.45.0",
     "postgres": "^3.4.0",
     "zod": "^3.24.0"

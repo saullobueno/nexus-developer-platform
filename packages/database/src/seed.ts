@@ -1,7 +1,8 @@
+import bcrypt from "bcryptjs";
 import { eq } from "drizzle-orm";
 import type { DatabaseClient } from "./client";
 import { slugify } from "./lib/slugify";
-import { organizations, permissions, rolePermissions, roles } from "./schema";
+import { organizations, permissions, rolePermissions, roles, userRoles, users } from "./schema";
 
 export const BASELINE_PERMISSIONS = [
   "services:read",
@@ -101,4 +102,43 @@ export async function seedBaseline(db: DatabaseClient, organizationName = "Acme 
   }
 
   return { organization };
+}
+
+export interface SeedUserInput {
+  organizationId: string;
+  email: string;
+  name: string;
+  password: string;
+  roleSlug: BaselineRoleSlug;
+}
+
+export async function seedUserWithRole(db: DatabaseClient, input: SeedUserInput) {
+  const passwordHash = await bcrypt.hash(input.password, 10);
+
+  await db
+    .insert(users)
+    .values({
+      organizationId: input.organizationId,
+      email: input.email,
+      name: input.name,
+      passwordHash,
+    })
+    .onConflictDoNothing({ target: users.email });
+
+  const user = await db.query.users.findFirst({ where: eq(users.email, input.email) });
+  if (!user) {
+    throw new Error(`Falha ao criar/encontrar o usuário "${input.email}"`);
+  }
+
+  const role = await db.query.roles.findFirst({ where: eq(roles.slug, input.roleSlug) });
+  if (!role) {
+    throw new Error(`Role "${input.roleSlug}" não encontrada — rode seedBaseline() antes`);
+  }
+
+  await db
+    .insert(userRoles)
+    .values({ userId: user.id, roleId: role.id })
+    .onConflictDoNothing({ target: [userRoles.userId, userRoles.roleId] });
+
+  return { user };
 }

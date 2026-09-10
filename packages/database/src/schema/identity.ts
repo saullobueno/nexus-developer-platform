@@ -22,6 +22,7 @@ export const users = pgTable(
     email: varchar("email", { length: 255 }).notNull(),
     name: varchar("name", { length: 255 }).notNull(),
     avatarUrl: text("avatar_url"),
+    passwordHash: text("password_hash"),
     ...timestamps,
   },
   (table) => [

@@ -2,18 +2,27 @@
   "name": "@nexus/auth",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test": "vitest run"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@nestjs/common": "^12.0.0",
+    "@nestjs/core": "^12.0.0",
+    "@nestjs/jwt": "^12.0.0",
+    "bcryptjs": "^3.0.0"
+  },
   "devDependencies": {
     "@nexus/config": "workspace:*",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.0.0",
     "eslint": "^9.0.0",
-    "typescript": "^5.7.0"
+    "reflect-metadata": "^0.2.0",
+    "typescript": "^5.7.0",
+    "vitest": "^5.0.0"
   }
 }

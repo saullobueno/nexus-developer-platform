@@ -1,8 +1,7 @@
 {
-  "extends": "@nexus/config/typescript/base.json",
+  "extends": "@nexus/config/typescript/nestjs.json",
   "compilerOptions": {
-    "outDir": "dist",
-    "rootDir": "src"
+    "noEmit": true
   },
-  "include": ["src"]
+  "include": ["src", "vitest.setup.ts", "vitest.config.ts"]
 }
