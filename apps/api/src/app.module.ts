@@ -12,7 +12,9 @@ import { FeatureFlagsModule } from "./feature-flags/feature-flags.module";
 import { IncidentsModule } from "./incidents/incidents.module";
 import { ObservabilityModule } from "./observability/observability.module";
 import { PipelinesModule } from "./pipelines/pipelines.module";
+import { ReportsModule } from "./reports/reports.module";
 import { ServicesModule } from "./services/services.module";
+import { TeamsModule } from "./teams/teams.module";
 
 @Module({
   imports: [
@@ -29,6 +31,8 @@ import { ServicesModule } from "./services/services.module";
     DocsModule,
     FeatureFlagsModule,
     PipelinesModule,
+    TeamsModule,
+    ReportsModule,
   ],
   controllers: [AppController],
 })

@@ -6,6 +6,15 @@ export const DEMO_PASSWORD = "demo1234";
 export const TEAMS = ["Platform", "Payments", "Identity", "Commerce", "Data", "Mobile"] as const;
 export type TeamName = (typeof TEAMS)[number];
 
+export const TEAM_DESCRIPTIONS: Record<TeamName, string> = {
+  Platform: "Infraestrutura interna, developer experience e o próprio Nexus.",
+  Payments: "Processamento de pagamentos e integração com providers externos.",
+  Identity: "Autenticação, autorização e gestão de identidade dos usuários.",
+  Commerce: "Catálogo de produtos, carrinho e checkout.",
+  Data: "Pipelines de dados, analytics e notificações assíncronas.",
+  Mobile: "Aplicativos móveis iOS e Android.",
+};
+
 export interface DemoServiceDefinition {
   name: string;
   team: TeamName;

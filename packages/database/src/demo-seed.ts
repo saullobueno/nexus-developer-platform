@@ -12,6 +12,7 @@ import {
   LOG_MESSAGES,
   METRIC_DEFINITIONS,
   SERVICES,
+  TEAM_DESCRIPTIONS,
   TEAMS,
 } from "./demo/data";
 import { hoursAgo, pick, randomFloat, randomHex, randomInt } from "./demo/random";
@@ -57,7 +58,14 @@ export async function seedDemoData(db: DatabaseClient) {
 
   await db
     .insert(teams)
-    .values(TEAMS.map((name) => ({ organizationId: organization.id, name, slug: slug(name) })))
+    .values(
+      TEAMS.map((name) => ({
+        organizationId: organization.id,
+        name,
+        slug: slug(name),
+        description: TEAM_DESCRIPTIONS[name],
+      })),
+    )
     .onConflictDoNothing({ target: [teams.organizationId, teams.slug] });
   const allTeams = await db.select().from(teams).where(eq(teams.organizationId, organization.id));
   const teamIdByName = new Map(allTeams.map((team) => [team.name, team.id]));
