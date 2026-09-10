@@ -2,7 +2,7 @@
 
 Internal Developer Portal (IDP) production-grade: catálogo de serviços, deployments, incidentes, observability, feature flags, pipelines, integrações e um AI Engineering Copilot — construído para demonstrar React/TypeScript avançado, full-stack, monorepo, platform engineering, observability, RBAC, integrações e AI agents.
 
-> **Status atual: Phase 0 — Foundation.** O produto ainda não tem features implementadas; esta fase estabeleceu o monorepo, ferramentas e pipelines de qualidade. Ver `NEXUS-SPECIFICATION.md` para a especificação completa e o roadmap de fases.
+> **Status atual: Phase 3 — Demo Mode.** Foundation, Database e Auth/RBAC completos; o backend já tem schema completo, login/JWT/RBAC reais e um dataset de demonstração (times, services, deployments, incidentes, observability, APIs, docs, flags). As features de produto (catálogo, dashboards, etc.) chegam nas próximas fases. Ver `NEXUS-SPECIFICATION.md` para a especificação completa e o roadmap de fases.
 
 ## Stack
 
@@ -21,6 +21,16 @@ pnpm dev
 ```bash
 pnpm lint && pnpm typecheck && pnpm test && pnpm build
 ```
+
+### Com Postgres real (dados de demonstração)
+
+```bash
+docker compose up -d                            # Postgres + Redis
+pnpm --filter @nexus/database db:migrate
+pnpm --filter @nexus/database db:seed:demo
+```
+
+**Credenciais de demo:** qualquer usuário criado pelo seed faz login com a senha `demo1234` — por exemplo `admin@acme.test` (role Admin).
 
 ## Estrutura
 

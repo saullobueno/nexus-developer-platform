@@ -50,7 +50,7 @@ Autenticação + RBAC + object-level authorization vivem em `packages/auth`, apl
 
 ## Demo Mode
 
-Com `DEMO_MODE=true`, `packages/integrations` usa `MockAdapter` no lugar dos adapters reais, e geradores de dados simulam deployments/métricas/logs/incidentes — o produto fica demonstrável sem nenhuma credencial externa. Implementado na Phase 3.
+`packages/integrations` expõe `MockAdapter`, usado no lugar dos adapters reais (Phase 13) — gera repositórios/deployments/errors/métricas plausíveis sem nenhuma chamada de rede. `packages/database` tem um gerador de dataset de demonstração (`seedDemoData`) que popula times, services, deployments, pipelines, incidentes, observability (métricas/logs/traces/errors), APIs, documentação e feature flags — o produto fica demonstrável sem nenhuma credencial externa, mesmo antes das features de produto (Catalog, Deployments, ...) existirem.
 
 ## Estado por fase
 

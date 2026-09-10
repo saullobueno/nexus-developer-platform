@@ -41,7 +41,7 @@ packages/ui          design system (shadcn/ui) — source-only, sem build step
 packages/database     Drizzle ORM + client Postgres — schema completo (Phase 1), testado via pglite
 packages/auth         JWT + RBAC (Phase 2) — guards/decorators desacoplados de @nexus/database
 packages/ai           AI Gateway/Copilot — Phase 15
-packages/integrations adapters (GitHub/Sentry/Grafana/Slack/Mock) — Phase 13
+packages/integrations IntegrationProvider + MockAdapter (Phase 3) — adapters reais na Phase 13
 packages/telemetry    OpenTelemetry — incremental, ver spec seção 26
 packages/config       tsconfig e eslint compartilhados (conteúdo real desde a Phase 0)
 packages/types        tipos compartilhados — cresce com o data model (Phase 1+)
@@ -71,5 +71,5 @@ Pacotes consumidos por `apps/api` (backend, precisa de JS compilado em runtime) 
 ## Ambiente local conhecido
 
 - Docker não estava disponível no ambiente em que a Phase 0 foi criada — `docker-compose.yml` existe mas não foi validado localmente rodando; validar antes de depender dele em CI/dev.
-- `DEMO_MODE=true` (ver `.env.example`) deve permitir rodar o produto sem credenciais externas, usando mock adapters (Phase 3).
+- `DEMO_MODE=true` (ver `.env.example`) deve permitir rodar o produto sem credenciais externas, usando `@nexus/integrations` `MockAdapter`. Para popular um banco local com dados de demonstração completos (times, services, deployments, incidentes, observability, APIs, docs, flags), rode `pnpm --filter @nexus/database db:seed:demo`.
 - Os testes de integração de `packages/database` rodam contra **pglite** (Postgres real em WASM, sem Docker) — ver `docs/decisions/0002-database-schema-and-testing.md`. Isso não substitui ter um Postgres real via `docker-compose.yml` para desenvolvimento/produção.
