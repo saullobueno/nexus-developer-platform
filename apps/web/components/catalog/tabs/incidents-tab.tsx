@@ -1,16 +1,11 @@
-import { Badge, type BadgeProps } from "@nexus/ui";
+import { IncidentSeverityBadge, type IncidentSeverity } from "@nexus/ui";
 import type { ServiceDetail } from "../../../lib/services";
-
-const SEVERITY_VARIANT: Record<string, BadgeProps["variant"]> = {
-  sev1: "destructive",
-  sev2: "warning",
-  sev3: "secondary",
-  sev4: "outline",
-};
 
 export function IncidentsTab({ detail }: { detail: ServiceDetail }) {
   if (detail.incidents.length === 0) {
-    return <p className="text-sm text-muted-foreground">Nenhum incidente registrado para este serviço.</p>;
+    return (
+      <p className="text-sm text-muted-foreground">Nenhum incidente registrado para este serviço.</p>
+    );
   }
 
   return (
@@ -23,9 +18,7 @@ export function IncidentsTab({ detail }: { detail: ServiceDetail }) {
               {incident.status} · {new Date(incident.detectedAt).toLocaleString("pt-BR")}
             </p>
           </div>
-          <Badge variant={SEVERITY_VARIANT[incident.severity] ?? "outline"}>
-            {incident.severity.toUpperCase()}
-          </Badge>
+          <IncidentSeverityBadge severity={incident.severity as IncidentSeverity} />
         </li>
       ))}
     </ul>

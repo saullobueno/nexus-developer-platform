@@ -1,14 +1,6 @@
-import { Badge, type BadgeProps } from "@nexus/ui";
+import { DeploymentStatusBadge, type DeploymentStatus } from "@nexus/ui";
+import Link from "next/link";
 import type { ServiceDetail } from "../../../lib/services";
-
-const STATUS_VARIANT: Record<string, BadgeProps["variant"]> = {
-  successful: "success",
-  running: "secondary",
-  queued: "outline",
-  failed: "destructive",
-  cancelled: "outline",
-  rolled_back: "warning",
-};
 
 export function DeploymentsTab({ detail }: { detail: ServiceDetail }) {
   if (detail.recentDeployments.length === 0) {
@@ -20,14 +12,16 @@ export function DeploymentsTab({ detail }: { detail: ServiceDetail }) {
       {detail.recentDeployments.map((deployment) => (
         <li key={deployment.id} className="flex items-center justify-between px-4 py-3 text-sm">
           <div>
-            <p className="font-medium">v{deployment.version}</p>
+            <Link href={`/deployments/${deployment.id}`} className="font-medium hover:underline">
+              v{deployment.version}
+            </Link>
             <p className="text-xs text-muted-foreground">
               {deployment.environmentName}
               {deployment.authorName ? ` · ${deployment.authorName}` : ""} ·{" "}
               {new Date(deployment.createdAt).toLocaleString("pt-BR")}
             </p>
           </div>
-          <Badge variant={STATUS_VARIANT[deployment.status] ?? "outline"}>{deployment.status}</Badge>
+          <DeploymentStatusBadge status={deployment.status as DeploymentStatus} />
         </li>
       ))}
     </ul>

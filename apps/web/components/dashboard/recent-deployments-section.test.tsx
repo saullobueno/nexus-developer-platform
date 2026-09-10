@@ -27,6 +27,6 @@ describe("RecentDeploymentsSection", () => {
 
     expect(screen.getByText(/payments-api/)).toBeInTheDocument();
     expect(screen.getByText(/v1.2.0/)).toBeInTheDocument();
-    expect(screen.getByText("successful")).toBeInTheDocument();
+    expect(screen.getByText("Successful")).toBeInTheDocument();
   });
 });

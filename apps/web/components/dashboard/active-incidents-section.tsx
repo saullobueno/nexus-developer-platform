@@ -1,16 +1,9 @@
-import { Badge, type BadgeProps } from "@nexus/ui";
+import { IncidentSeverityBadge, type IncidentSeverity } from "@nexus/ui";
 import type { DashboardSummary } from "../../lib/dashboard";
 
 interface ActiveIncidentsSectionProps {
   incidents: DashboardSummary["activeIncidents"];
 }
-
-const SEVERITY_VARIANT: Record<string, BadgeProps["variant"]> = {
-  sev1: "destructive",
-  sev2: "warning",
-  sev3: "secondary",
-  sev4: "outline",
-};
 
 export function ActiveIncidentsSection({ incidents }: ActiveIncidentsSectionProps) {
   return (
@@ -25,14 +18,15 @@ export function ActiveIncidentsSection({ incidents }: ActiveIncidentsSectionProp
       ) : (
         <ul className="divide-y">
           {incidents.map((incident) => (
-            <li key={incident.id} className="flex items-center justify-between px-4 py-3 text-sm">
+            <li
+              key={incident.id}
+              className="flex items-center justify-between px-4 py-3 text-sm"
+            >
               <div>
                 <p className="font-medium">{incident.title}</p>
                 <p className="text-xs text-muted-foreground">{incident.status}</p>
               </div>
-              <Badge variant={SEVERITY_VARIANT[incident.severity] ?? "outline"}>
-                {incident.severity.toUpperCase()}
-              </Badge>
+              <IncidentSeverityBadge severity={incident.severity as IncidentSeverity} />
             </li>
           ))}
         </ul>

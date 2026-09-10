@@ -4,8 +4,30 @@ export { Badge, badgeVariants } from "./components/badge";
 export type { BadgeProps } from "./components/badge";
 export { Button, buttonVariants } from "./components/button";
 export type { ButtonProps } from "./components/button";
+export { DeploymentStatusBadge } from "./components/deployment-status-badge";
+export type {
+  DeploymentStatus,
+  DeploymentStatusBadgeProps,
+} from "./components/deployment-status-badge";
+export {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogOverlay,
+  DialogPortal,
+  DialogTitle,
+  DialogTrigger,
+} from "./components/dialog";
 export { HealthIndicator } from "./components/health-indicator";
 export type { HealthIndicatorProps, HealthStatus } from "./components/health-indicator";
+export { IncidentSeverityBadge } from "./components/incident-severity-badge";
+export type {
+  IncidentSeverity,
+  IncidentSeverityBadgeProps,
+} from "./components/incident-severity-badge";
 export { Input } from "./components/input";
 export type { InputProps } from "./components/input";
 export { MetricCard } from "./components/metric-card";

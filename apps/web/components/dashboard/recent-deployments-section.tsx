@@ -1,18 +1,10 @@
-import { Badge, type BadgeProps } from "@nexus/ui";
+import { DeploymentStatusBadge, type DeploymentStatus } from "@nexus/ui";
+import Link from "next/link";
 import type { DashboardSummary } from "../../lib/dashboard";
 
 interface RecentDeploymentsSectionProps {
   deployments: DashboardSummary["recentDeployments"];
 }
-
-const STATUS_VARIANT: Record<string, BadgeProps["variant"]> = {
-  successful: "success",
-  running: "secondary",
-  queued: "outline",
-  failed: "destructive",
-  cancelled: "outline",
-  rolled_back: "warning",
-};
 
 export function RecentDeploymentsSection({ deployments }: RecentDeploymentsSectionProps) {
   return (
@@ -25,20 +17,21 @@ export function RecentDeploymentsSection({ deployments }: RecentDeploymentsSecti
       ) : (
         <ul className="divide-y">
           {deployments.map((deployment) => (
-            <li key={deployment.id} className="flex items-center justify-between px-4 py-3 text-sm">
+            <li
+              key={deployment.id}
+              className="flex items-center justify-between px-4 py-3 text-sm"
+            >
               <div>
-                <p className="font-medium">
+                <Link href={`/deployments/${deployment.id}`} className="font-medium hover:underline">
                   {deployment.serviceName}{" "}
                   <span className="text-muted-foreground">v{deployment.version}</span>
-                </p>
+                </Link>
                 <p className="text-xs text-muted-foreground">
                   {deployment.environmentName}
                   {deployment.authorName ? ` · ${deployment.authorName}` : ""}
                 </p>
               </div>
-              <Badge variant={STATUS_VARIANT[deployment.status] ?? "outline"}>
-                {deployment.status}
-              </Badge>
+              <DeploymentStatusBadge status={deployment.status as DeploymentStatus} />
             </li>
           ))}
         </ul>
