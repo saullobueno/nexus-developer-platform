@@ -2,7 +2,7 @@
 
 Internal Developer Portal (IDP) production-grade: catálogo de serviços, deployments, incidentes, observability, feature flags, pipelines, integrações e um AI Engineering Copilot — construído para demonstrar React/TypeScript avançado, full-stack, monorepo, platform engineering, observability, RBAC, integrações e AI agents.
 
-> **Status atual: Phase 3 — Demo Mode.** Foundation, Database e Auth/RBAC completos; o backend já tem schema completo, login/JWT/RBAC reais e um dataset de demonstração (times, services, deployments, incidentes, observability, APIs, docs, flags). As features de produto (catálogo, dashboards, etc.) chegam nas próximas fases. Ver `NEXUS-SPECIFICATION.md` para a especificação completa e o roadmap de fases.
+> **Status atual: Phase 4 — Home.** Foundation, Database, Auth/RBAC e Demo Mode completos; o frontend já tem login real (JWT em cookie httpOnly), AppShell (sidebar + header) e a Home com KPIs, My Services, Recent Deployments e Active Incidents vindos da API. As demais features de produto (catálogo, deployments, incidentes, observability, etc.) chegam nas próximas fases. Ver `NEXUS-SPECIFICATION.md` para a especificação completa e o roadmap de fases.
 
 ## Stack
 

@@ -1,14 +1,15 @@
-import { Button } from "@nexus/ui";
+"use client";
+
+import { AppShell } from "../components/app-shell/app-shell";
+import { AuthGuard } from "../components/auth-guard";
+import { DashboardPage } from "../components/dashboard/dashboard-page";
 
 export default function HomePage() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center gap-4 p-8">
-      <h1 className="text-3xl font-semibold tracking-tight">Nexus Developer Platform</h1>
-      <p className="max-w-md text-center text-muted-foreground">
-        Foundation em construção — catálogo de serviços, deployments, incidentes, observability e
-        AI Copilot chegam nas próximas fases.
-      </p>
-      <Button>Explorar catálogo</Button>
-    </main>
+    <AuthGuard>
+      <AppShell>
+        <DashboardPage />
+      </AppShell>
+    </AuthGuard>
   );
 }

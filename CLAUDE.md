@@ -9,7 +9,7 @@ Internal Developer Portal (IDP) production-grade: catálogo de serviços, deploy
 ## Stack
 
 - **Monorepo**: pnpm workspaces + Turborepo.
-- **Frontend** (`apps/web`): Next.js (App Router) + React + TypeScript strict + Tailwind v4 + shadcn/ui (em `packages/ui`). TanStack Query/Table, Zustand, React Hook Form, Zod, ECharts e Monaco chegam nas fases que os utilizam — não estão instalados na Phase 0.
+- **Frontend** (`apps/web`): Next.js (App Router) + React + TypeScript strict + Tailwind v4 + shadcn/ui (em `packages/ui`). TanStack Query + React Hook Form + Zod desde a Phase 4 (sessão, login, dashboard). TanStack Table, Zustand, ECharts e Monaco chegam nas fases que os utilizam.
 - **Backend** (`apps/api`): NestJS + Drizzle ORM (`packages/database`) + PostgreSQL. Redis/BullMQ chegam quando houver jobs/filas reais.
 - **Testes**: Vitest (unit/integration) + Testing Library + Playwright (e2e, em `tests/`) + Storybook (`packages/ui`).
 - **AI**: Vercel AI SDK + Anthropic/OpenAI, em `packages/ai` — implementado na Phase 15.
@@ -73,3 +73,5 @@ Pacotes consumidos por `apps/api` (backend, precisa de JS compilado em runtime) 
 - Docker não estava disponível no ambiente em que a Phase 0 foi criada — `docker-compose.yml` existe mas não foi validado localmente rodando; validar antes de depender dele em CI/dev.
 - `DEMO_MODE=true` (ver `.env.example`) deve permitir rodar o produto sem credenciais externas, usando `@nexus/integrations` `MockAdapter`. Para popular um banco local com dados de demonstração completos (times, services, deployments, incidentes, observability, APIs, docs, flags), rode `pnpm --filter @nexus/database db:seed:demo`.
 - Os testes de integração de `packages/database` rodam contra **pglite** (Postgres real em WASM, sem Docker) — ver `docs/decisions/0002-database-schema-and-testing.md`. Isso não substitui ter um Postgres real via `docker-compose.yml` para desenvolvimento/produção.
+- Auth no frontend (`apps/web`) é client-side: `<AuthGuard>` chama `GET /auth/me` (cookie httpOnly) e redireciona para `/login` se falhar. Isso é uma simplificação da Phase 4 — não protege contra flash de conteúdo em SSR nem substitui um middleware/verificação server-side; considerar isso na Phase 17 (Security hardening).
+- `apps/api` precisa de `app.enableCors({ origin: WEB_APP_URL, credentials: true })` (já configurado em `main.ts`) para o browser aceitar o cookie `nexus_token` em requests cross-port (`localhost:3000` → `localhost:3001`). Se o frontend rodar em outra porta/domínio, ajuste `WEB_APP_URL`.

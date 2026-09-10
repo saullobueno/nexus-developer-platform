@@ -1,10 +1,11 @@
-import { Module } from "@nestjs/common";
+import { Global, Module } from "@nestjs/common";
 import { JwtModule } from "@nestjs/jwt";
 import { PERMISSIONS_CHECKER } from "@nexus/auth";
 import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
 import { DrizzlePermissionsChecker } from "./drizzle-permissions-checker";
 
+@Global()
 @Module({
   imports: [
     JwtModule.register({
@@ -14,6 +15,6 @@ import { DrizzlePermissionsChecker } from "./drizzle-permissions-checker";
   ],
   controllers: [AuthController],
   providers: [AuthService, { provide: PERMISSIONS_CHECKER, useClass: DrizzlePermissionsChecker }],
-  exports: [AuthService],
+  exports: [AuthService, JwtModule, PERMISSIONS_CHECKER],
 })
 export class AuthModule {}
