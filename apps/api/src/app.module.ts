@@ -8,6 +8,7 @@ import { DashboardModule } from "./dashboard/dashboard.module";
 import { DatabaseModule } from "./database/database.module";
 import { DeploymentsModule } from "./deployments/deployments.module";
 import { DocsModule } from "./docs/docs.module";
+import { FeatureFlagsModule } from "./feature-flags/feature-flags.module";
 import { IncidentsModule } from "./incidents/incidents.module";
 import { ObservabilityModule } from "./observability/observability.module";
 import { ServicesModule } from "./services/services.module";
@@ -25,6 +26,7 @@ import { ServicesModule } from "./services/services.module";
     ObservabilityModule,
     ApisModule,
     DocsModule,
+    FeatureFlagsModule,
   ],
   controllers: [AppController],
 })

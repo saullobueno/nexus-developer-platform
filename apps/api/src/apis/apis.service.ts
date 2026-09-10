@@ -6,15 +6,14 @@ import {
   apiProtocolEnum,
   apiStatusEnum,
   apis,
-  auditLogs,
   documents,
   environments,
   serviceEnvironments,
   services,
   teams,
-  users,
 } from "@nexus/database";
-import { and, count, desc, eq, ilike, or } from "drizzle-orm";
+import { and, count, eq, ilike, or } from "drizzle-orm";
+import { AuditService } from "../common/audit.service";
 import { DATABASE_CLIENT } from "../database/database.constants";
 import type { ListApisQuery } from "./dto/list-apis.dto";
 
@@ -24,7 +23,10 @@ function isOneOf<T extends string>(value: string, allowed: readonly T[]): value 
 
 @Injectable()
 export class ApisService {
-  constructor(@Inject(DATABASE_CLIENT) private readonly db: DatabaseClient) {}
+  constructor(
+    @Inject(DATABASE_CLIENT) private readonly db: DatabaseClient,
+    private readonly auditService: AuditService,
+  ) {}
 
   async list(organizationId: string, query: ListApisQuery) {
     const conditions = [eq(apis.organizationId, organizationId)];
@@ -128,18 +130,7 @@ export class ApisService {
             .from(documents)
             .where(eq(documents.serviceId, api.serviceId))
         : Promise.resolve([]),
-      this.db
-        .select({
-          id: auditLogs.id,
-          action: auditLogs.action,
-          createdAt: auditLogs.createdAt,
-          actorName: users.name,
-        })
-        .from(auditLogs)
-        .leftJoin(users, eq(auditLogs.actorId, users.id))
-        .where(and(eq(auditLogs.resource, "api"), eq(auditLogs.resourceId, api.id)))
-        .orderBy(desc(auditLogs.createdAt))
-        .limit(20),
+      this.auditService.listForResource(organizationId, "api", api.id),
     ]);
 
     return {

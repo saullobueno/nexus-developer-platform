@@ -43,6 +43,7 @@ export type {
 } from "./components/service-dependency-graph";
 export { ServiceStatusBadge } from "./components/service-status-badge";
 export type { ServiceStatusBadgeProps } from "./components/service-status-badge";
+export { Switch } from "./components/switch";
 export { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/tabs";
 export { TraceWaterfall } from "./components/trace-waterfall";
 export type { TraceWaterfallProps, TraceWaterfallSpan } from "./components/trace-waterfall";

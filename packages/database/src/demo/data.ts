@@ -220,4 +220,16 @@ export const FEATURE_FLAGS = [
     enabled: false,
     rules: [],
   },
+  {
+    key: "advanced-search",
+    name: "Busca avançada",
+    description: "Libera filtros avançados de busca por segmento, com rollout gradual para o restante da base.",
+    type: "rule_based" as const,
+    enabled: true,
+    rules: [
+      { kind: "segment", value: { segment: "enterprise", percentage: 100 } },
+      { kind: "segment", value: { segment: "beta", percentage: 100 } },
+      { kind: "percentage", value: { percentage: 45 } },
+    ],
+  },
 ];
