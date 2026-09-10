@@ -10,6 +10,7 @@ import { DeploymentsModule } from "./deployments/deployments.module";
 import { DocsModule } from "./docs/docs.module";
 import { FeatureFlagsModule } from "./feature-flags/feature-flags.module";
 import { IncidentsModule } from "./incidents/incidents.module";
+import { IntegrationsModule } from "./integrations/integrations.module";
 import { ObservabilityModule } from "./observability/observability.module";
 import { PipelinesModule } from "./pipelines/pipelines.module";
 import { ReportsModule } from "./reports/reports.module";
@@ -33,6 +34,7 @@ import { TeamsModule } from "./teams/teams.module";
     PipelinesModule,
     TeamsModule,
     ReportsModule,
+    IntegrationsModule,
   ],
   controllers: [AppController],
 })

@@ -145,6 +145,9 @@ importers:
       '@nexus/database':
         specifier: workspace:*
         version: link:../../packages/database
+      '@nexus/integrations':
+        specifier: workspace:*
+        version: link:../../packages/integrations
       cookie-parser:
         specifier: ^1.4.0
         version: 1.4.7
@@ -438,6 +441,9 @@ importers:
       '@nexus/config':
         specifier: workspace:*
         version: link:../config
+      '@types/node':
+        specifier: ^22.0.0
+        version: 22.20.1
       eslint:
         specifier: ^9.0.0
         version: 9.39.5(jiti@2.7.0)(supports-color@7.2.0)

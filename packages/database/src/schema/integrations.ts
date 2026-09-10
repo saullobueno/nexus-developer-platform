@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { boolean, index, jsonb, pgTable, text, uuid } from "drizzle-orm/pg-core";
+import { boolean, index, jsonb, pgTable, text, uniqueIndex, uuid } from "drizzle-orm/pg-core";
 import { createdAtOnly, idColumn } from "./_helpers";
 import { integrationProviderEnum } from "./enums";
 import { organizations } from "./organizations";
@@ -16,7 +16,10 @@ export const integrations = pgTable(
     enabled: boolean("enabled").notNull().default(true),
     ...createdAtOnly,
   },
-  (table) => [index("integrations_organization_id_idx").on(table.organizationId)],
+  (table) => [
+    index("integrations_organization_id_idx").on(table.organizationId),
+    uniqueIndex("integrations_org_provider_idx").on(table.organizationId, table.provider),
+  ],
 );
 
 export const webhooks = pgTable(
