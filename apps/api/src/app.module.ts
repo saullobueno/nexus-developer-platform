@@ -11,6 +11,7 @@ import { DocsModule } from "./docs/docs.module";
 import { FeatureFlagsModule } from "./feature-flags/feature-flags.module";
 import { IncidentsModule } from "./incidents/incidents.module";
 import { ObservabilityModule } from "./observability/observability.module";
+import { PipelinesModule } from "./pipelines/pipelines.module";
 import { ServicesModule } from "./services/services.module";
 
 @Module({
@@ -27,6 +28,7 @@ import { ServicesModule } from "./services/services.module";
     ApisModule,
     DocsModule,
     FeatureFlagsModule,
+    PipelinesModule,
   ],
   controllers: [AppController],
 })

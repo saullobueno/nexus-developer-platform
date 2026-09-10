@@ -2,7 +2,7 @@
 
 Internal Developer Portal (IDP) production-grade: catálogo de serviços, deployments, incidentes, observability, feature flags, pipelines, integrações e um AI Engineering Copilot — construído para demonstrar React/TypeScript avançado, full-stack, monorepo, platform engineering, observability, RBAC, integrações e AI agents.
 
-> **Status atual: Phase 10 — Feature Flags.** Foundation, Database, Auth/RBAC, Demo Mode, Home, Service Catalog, Deployments, Incidents, Observability e APIs/Docs completos. `/feature-flags` cobre os 5 tipos (Boolean, Percentage, User targeting, Organization targeting, Rule-based) com toggle on/off e edição de regras — toda alteração grava audit log (`feature_flag.enable`/`disable`/`update_rules`), visível na aba Activity do detail. O detail mostra o rollout resumido (ex.: "Enterprise 100% / Beta 100% / Everyone 45%"). Ver `NEXUS-SPECIFICATION.md` para a especificação completa e o roadmap de fases.
+> **Status atual: Phase 11 — Pipelines.** Foundation, Database, Auth/RBAC, Demo Mode, Home, Service Catalog, Deployments, Incidents, Observability, APIs/Docs e Feature Flags completos. `/pipelines` lista os pipelines de CI por serviço com a última execução; `/pipelines/[id]` mostra o histórico de execuções; `/pipelines/runs/[runId]` mostra o pipeline visual (`Build → Unit Tests → Integration Tests → Security → Deploy`) com status, duration e logs por stage. `PipelineTimeline` (antes local a Deployments) foi promovido para o design system e agora é compartilhado entre Deployments e Pipelines. Ver `NEXUS-SPECIFICATION.md` para a especificação completa e o roadmap de fases.
 
 ## Stack
 

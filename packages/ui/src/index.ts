@@ -36,6 +36,8 @@ export { MetricCard } from "./components/metric-card";
 export type { MetricCardProps } from "./components/metric-card";
 export { MetricChart } from "./components/metric-chart";
 export type { MetricChartPoint, MetricChartProps } from "./components/metric-chart";
+export { PipelineTimeline } from "./components/pipeline-timeline";
+export type { PipelineTimelineProps, PipelineTimelineStage } from "./components/pipeline-timeline";
 export { ServiceDependencyGraph } from "./components/service-dependency-graph";
 export type {
   ServiceDependencyGraphProps,

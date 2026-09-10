@@ -1,5 +1,16 @@
-import { cn } from "@nexus/ui";
-import type { DeploymentStage } from "../../lib/deployments";
+import { cn } from "../lib/utils";
+
+export interface PipelineTimelineStage {
+  id: string;
+  name: string;
+  order: number;
+  status: string;
+}
+
+export interface PipelineTimelineProps {
+  stages: PipelineTimelineStage[];
+  emptyMessage?: string;
+}
 
 const STATUS_STYLES: Record<string, string> = {
   success: "bg-emerald-500 text-white",
@@ -10,11 +21,12 @@ const STATUS_STYLES: Record<string, string> = {
   cancelled: "bg-muted text-muted-foreground",
 };
 
-export function DeploymentTimeline({ stages }: { stages: DeploymentStage[] }) {
+export function PipelineTimeline({
+  stages,
+  emptyMessage = "Sem pipeline associado.",
+}: PipelineTimelineProps) {
   if (stages.length === 0) {
-    return (
-      <p className="text-sm text-muted-foreground">Sem pipeline associado a este deployment.</p>
-    );
+    return <p className="text-sm text-muted-foreground">{emptyMessage}</p>;
   }
 
   return (

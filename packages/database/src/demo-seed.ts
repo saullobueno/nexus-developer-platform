@@ -253,15 +253,19 @@ export async function seedDemoData(db: DatabaseClient) {
 
         const failStageIndex = status === "failed" ? randomInt(1, PIPELINE_STAGE_NAMES.length - 2) : -1;
         await db.insert(pipelineStages).values(
-          PIPELINE_STAGE_NAMES.map((name, stageIndex) => ({
-            pipelineRunId: run.id,
-            name,
-            order: stageIndex,
-            status: stageStatusFor(stageIndex, failStageIndex),
-            startedAt,
-            finishedAt,
-            durationMs: Math.round(durationMs / PIPELINE_STAGE_NAMES.length),
-          })),
+          PIPELINE_STAGE_NAMES.map((name, stageIndex) => {
+            const stageStatus = stageStatusFor(stageIndex, failStageIndex);
+            return {
+              pipelineRunId: run.id,
+              name,
+              order: stageIndex,
+              status: stageStatus,
+              startedAt,
+              finishedAt,
+              durationMs: Math.round(durationMs / PIPELINE_STAGE_NAMES.length),
+              logs: stageLogsFor(name, stageStatus),
+            };
+          }),
         );
       }
     }
@@ -606,4 +610,12 @@ function stageStatusFor(
   if (failStageIndex === stageIndex) return "failed";
   if (failStageIndex !== -1 && stageIndex > failStageIndex) return "skipped";
   return "success";
+}
+
+function stageLogsFor(name: string, status: "success" | "failed" | "skipped"): string | null {
+  if (status === "skipped") return null;
+  if (status === "failed") {
+    return `$ run ${name.toLowerCase().replace(/\s+/g, "-")}\n✗ ${name} failed\nError: stage exited with a non-zero status code`;
+  }
+  return `$ run ${name.toLowerCase().replace(/\s+/g, "-")}\n✓ ${name} passed`;
 }

@@ -1,10 +1,9 @@
 "use client";
 
-import { Button, DeploymentStatusBadge, LogViewer, type DeploymentStatus } from "@nexus/ui";
+import { Button, DeploymentStatusBadge, LogViewer, PipelineTimeline, type DeploymentStatus } from "@nexus/ui";
 import Link from "next/link";
 import { useDeploymentDetail } from "../../hooks/use-deployment-detail";
 import { DeploymentActions } from "./deployment-actions";
-import { DeploymentTimeline } from "./deployment-timeline";
 
 export function DeploymentDetailPage({ id }: { id: string }) {
   const { data, isLoading, isError, refetch } = useDeploymentDetail(id);
@@ -66,7 +65,7 @@ export function DeploymentDetailPage({ id }: { id: string }) {
 
       <div className="space-y-3">
         <h2 className="text-sm font-semibold">Pipeline</h2>
-        <DeploymentTimeline stages={stages} />
+        <PipelineTimeline stages={stages} emptyMessage="Sem pipeline associado a este deployment." />
       </div>
 
       <div className="space-y-3">
