@@ -1,8 +1,15 @@
 "use client";
 
-import { Button, DeploymentStatusBadge, IncidentSeverityBadge, MetricCard, type DeploymentStatus, type IncidentSeverity } from "@nexus/ui";
+import {
+  Button,
+  DeploymentStatusBadge,
+  IncidentSeverityBadge,
+  LogViewer,
+  MetricCard,
+  type DeploymentStatus,
+  type IncidentSeverity,
+} from "@nexus/ui";
 import Link from "next/link";
-import { DeploymentLogs } from "../deployments/deployment-logs";
 import { useIncidentDetail } from "../../hooks/use-incident-detail";
 import { IncidentPostmortem } from "./incident-postmortem";
 import { IncidentStatusControls } from "./incident-status-controls";
@@ -114,7 +121,7 @@ export function IncidentDetailPage({ id }: { id: string }) {
 
       <section className="space-y-3">
         <h2 className="text-sm font-semibold">Logs</h2>
-        <DeploymentLogs logs={logs} />
+        <LogViewer logs={logs} />
       </section>
 
       <section className="space-y-3">

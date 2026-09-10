@@ -7,6 +7,7 @@ import { DashboardModule } from "./dashboard/dashboard.module";
 import { DatabaseModule } from "./database/database.module";
 import { DeploymentsModule } from "./deployments/deployments.module";
 import { IncidentsModule } from "./incidents/incidents.module";
+import { ObservabilityModule } from "./observability/observability.module";
 import { ServicesModule } from "./services/services.module";
 
 @Module({
@@ -19,6 +20,7 @@ import { ServicesModule } from "./services/services.module";
     ServicesModule,
     DeploymentsModule,
     IncidentsModule,
+    ObservabilityModule,
   ],
   controllers: [AppController],
 })

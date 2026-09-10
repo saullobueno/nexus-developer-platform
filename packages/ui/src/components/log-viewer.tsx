@@ -1,5 +1,11 @@
-import { cn } from "@nexus/ui";
-import type { DeploymentLogEntry } from "../../lib/deployments";
+import { cn } from "../lib/utils";
+
+export interface LogViewerEntry {
+  id: string;
+  level: string;
+  message: string;
+  timestamp: string;
+}
 
 const LEVEL_COLOR: Record<string, string> = {
   debug: "text-muted-foreground",
@@ -9,9 +15,14 @@ const LEVEL_COLOR: Record<string, string> = {
   fatal: "text-destructive",
 };
 
-export function DeploymentLogs({ logs }: { logs: DeploymentLogEntry[] }) {
+export interface LogViewerProps {
+  logs: LogViewerEntry[];
+  emptyMessage?: string;
+}
+
+export function LogViewer({ logs, emptyMessage = "Nenhum log registrado." }: LogViewerProps) {
   if (logs.length === 0) {
-    return <p className="text-sm text-muted-foreground">Nenhum log registrado.</p>;
+    return <p className="text-sm text-muted-foreground">{emptyMessage}</p>;
   }
 
   return (

@@ -30,8 +30,12 @@ export type {
 } from "./components/incident-severity-badge";
 export { Input } from "./components/input";
 export type { InputProps } from "./components/input";
+export { LogViewer } from "./components/log-viewer";
+export type { LogViewerEntry, LogViewerProps } from "./components/log-viewer";
 export { MetricCard } from "./components/metric-card";
 export type { MetricCardProps } from "./components/metric-card";
+export { MetricChart } from "./components/metric-chart";
+export type { MetricChartPoint, MetricChartProps } from "./components/metric-chart";
 export { ServiceDependencyGraph } from "./components/service-dependency-graph";
 export type {
   ServiceDependencyGraphProps,
@@ -40,4 +44,6 @@ export type {
 export { ServiceStatusBadge } from "./components/service-status-badge";
 export type { ServiceStatusBadgeProps } from "./components/service-status-badge";
 export { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/tabs";
+export { TraceWaterfall } from "./components/trace-waterfall";
+export type { TraceWaterfallProps, TraceWaterfallSpan } from "./components/trace-waterfall";
 export { cn } from "./lib/utils";
