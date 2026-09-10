@@ -14,6 +14,7 @@ import {
 import { and, count, desc, eq, lt } from "drizzle-orm";
 import { AuditService } from "../common/audit.service";
 import { DATABASE_CLIENT } from "../database/database.constants";
+import { RealtimeEventBusService } from "../realtime/realtime-event-bus.service";
 import type { ListDeploymentsQuery } from "./dto/list-deployments.dto";
 
 function isOneOf<T extends string>(value: string, allowed: readonly T[]): value is T {
@@ -27,6 +28,7 @@ export class DeploymentsService {
   constructor(
     @Inject(DATABASE_CLIENT) private readonly db: DatabaseClient,
     private readonly auditService: AuditService,
+    private readonly realtimeEventBus: RealtimeEventBusService,
   ) {}
 
   async list(organizationId: string, query: ListDeploymentsQuery) {
@@ -128,6 +130,13 @@ export class DeploymentsService {
       before: scoped.deployment,
       after: updated,
     });
+
+    this.realtimeEventBus.emit({
+      organizationId,
+      type: "deployment.updated",
+      data: { id, serviceName: scoped.serviceName, version: scoped.deployment.version, status: updated!.status },
+    });
+
     return updated;
   }
 
@@ -159,6 +168,13 @@ export class DeploymentsService {
       resourceId: created!.id,
       after: created,
     });
+
+    this.realtimeEventBus.emit({
+      organizationId,
+      type: "deployment.started",
+      data: { id: created!.id, serviceName: scoped.serviceName, version: created!.version, status: created!.status },
+    });
+
     return created;
   }
 
@@ -217,6 +233,17 @@ export class DeploymentsService {
       resourceId: id,
       before: scoped.deployment,
       after: { rolledBack, created },
+    });
+
+    this.realtimeEventBus.emit({
+      organizationId,
+      type: "deployment.updated",
+      data: { id, serviceName: scoped.serviceName, version: rolledBack!.version, status: rolledBack!.status },
+    });
+    this.realtimeEventBus.emit({
+      organizationId,
+      type: "deployment.completed",
+      data: { id: created!.id, serviceName: scoped.serviceName, version: created!.version, status: created!.status },
     });
 
     return created;

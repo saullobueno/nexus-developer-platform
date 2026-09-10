@@ -13,6 +13,7 @@ import { IncidentsModule } from "./incidents/incidents.module";
 import { IntegrationsModule } from "./integrations/integrations.module";
 import { ObservabilityModule } from "./observability/observability.module";
 import { PipelinesModule } from "./pipelines/pipelines.module";
+import { RealtimeModule } from "./realtime/realtime.module";
 import { ReportsModule } from "./reports/reports.module";
 import { ServicesModule } from "./services/services.module";
 import { TeamsModule } from "./teams/teams.module";
@@ -22,6 +23,7 @@ import { TeamsModule } from "./teams/teams.module";
     ConfigModule.forRoot({ isGlobal: true }),
     DatabaseModule,
     CommonModule,
+    RealtimeModule,
     AuthModule,
     DashboardModule,
     ServicesModule,

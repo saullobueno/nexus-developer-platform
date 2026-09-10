@@ -2,6 +2,7 @@
 
 import { useState, type ReactNode } from "react";
 import { Header } from "./header";
+import { RealtimeToaster } from "./realtime-toaster";
 import { Sidebar } from "./sidebar";
 
 export function AppShell({ children }: { children: ReactNode }) {
@@ -14,6 +15,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         <Sidebar collapsed={collapsed} />
         <main className="flex-1 overflow-y-auto">{children}</main>
       </div>
+      <RealtimeToaster />
     </div>
   );
 }

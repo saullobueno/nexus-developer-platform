@@ -47,6 +47,8 @@ export { ServiceStatusBadge } from "./components/service-status-badge";
 export type { ServiceStatusBadgeProps } from "./components/service-status-badge";
 export { Switch } from "./components/switch";
 export { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/tabs";
+export { Toast } from "./components/toast";
+export type { ToastProps } from "./components/toast";
 export { TraceWaterfall } from "./components/trace-waterfall";
 export type { TraceWaterfallProps, TraceWaterfallSpan } from "./components/trace-waterfall";
 export { cn } from "./lib/utils";

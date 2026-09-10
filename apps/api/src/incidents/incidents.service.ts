@@ -16,6 +16,7 @@ import {
 import { and, count, desc, eq, inArray } from "drizzle-orm";
 import { AuditService } from "../common/audit.service";
 import { DATABASE_CLIENT } from "../database/database.constants";
+import { RealtimeEventBusService } from "../realtime/realtime-event-bus.service";
 import type { AddIncidentEventDto } from "./dto/add-incident-event.dto";
 import type { CreateIncidentDto } from "./dto/create-incident.dto";
 import type { ListIncidentsQuery } from "./dto/list-incidents.dto";
@@ -32,6 +33,7 @@ export class IncidentsService {
   constructor(
     @Inject(DATABASE_CLIENT) private readonly db: DatabaseClient,
     private readonly auditService: AuditService,
+    private readonly realtimeEventBus: RealtimeEventBusService,
   ) {}
 
   async list(organizationId: string, query: ListIncidentsQuery) {
@@ -218,6 +220,12 @@ export class IncidentsService {
       after: created,
     });
 
+    this.realtimeEventBus.emit({
+      organizationId,
+      type: "incident.created",
+      data: { id: created!.id, title: created!.title, severity: created!.severity, status: created!.status },
+    });
+
     return created;
   }
 
@@ -258,6 +266,12 @@ export class IncidentsService {
       resourceId: id,
       before,
       after: updated,
+    });
+
+    this.realtimeEventBus.emit({
+      organizationId,
+      type: updated!.status === "resolved" ? "incident.resolved" : "incident.updated",
+      data: { id, title: updated!.title, severity: updated!.severity, status: updated!.status },
     });
 
     return updated;
