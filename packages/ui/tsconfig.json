@@ -1,0 +1,4 @@
+{
+  "extends": "@nexus/config/typescript/react-library.json",
+  "include": ["src", "vitest.setup.ts", "vitest.config.ts"]
+}

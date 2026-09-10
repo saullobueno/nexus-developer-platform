@@ -1,0 +1,43 @@
+# dependencies
+node_modules/
+.pnpm-store/
+
+# builds
+dist/
+build/
+.next/
+out/
+storybook-static/
+*.tsbuildinfo
+
+# turbo
+.turbo/
+
+# tests
+coverage/
+playwright-report/
+test-results/
+blob-report/
+
+# env
+.env
+.env.local
+.env.*.local
+
+# logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# tooling local (Claude Code)
+.claude/
+
+# editor / os
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# drizzle
+packages/database/drizzle/meta/

@@ -1,0 +1,8 @@
+node_modules
+dist
+.next
+.turbo
+storybook-static
+coverage
+playwright-report
+pnpm-lock.yaml
