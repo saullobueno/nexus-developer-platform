@@ -1,9 +1,9 @@
 import Link from "next/link";
-import type { ServiceDetail } from "../../../lib/services";
+import type { ApiDetail } from "../../../lib/apis";
 
-export function DocumentationTab({ detail }: { detail: ServiceDetail }) {
+export function DocumentationTab({ detail }: { detail: ApiDetail }) {
   if (detail.documents.length === 0) {
-    return <p className="text-sm text-muted-foreground">Nenhum documento vinculado a este serviço.</p>;
+    return <p className="text-sm text-muted-foreground">Nenhum documento vinculado a esta API.</p>;
   }
 
   return (

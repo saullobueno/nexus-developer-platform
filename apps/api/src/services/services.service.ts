@@ -3,6 +3,7 @@ import type { DatabaseClient } from "@nexus/database";
 import {
   apis,
   deployments,
+  documents,
   environments,
   healthStatusEnum,
   incidentServices,
@@ -115,8 +116,18 @@ export class ServicesService {
       throw new NotFoundException("Serviço não encontrado");
     }
 
-    const [team, owners, environmentsRows, recentDeployments, dependencies, dependents, affectedIncidents, latestMetrics, serviceApis] =
-      await Promise.all([
+    const [
+      team,
+      owners,
+      environmentsRows,
+      recentDeployments,
+      dependencies,
+      dependents,
+      affectedIncidents,
+      latestMetrics,
+      serviceApis,
+      serviceDocuments,
+    ] = await Promise.all([
         service.teamId
           ? this.db.query.teams.findFirst({ where: eq(teams.id, service.teamId) })
           : Promise.resolve(undefined),
@@ -193,6 +204,10 @@ export class ServicesService {
           .select({ id: apis.id, name: apis.name, slug: apis.slug, protocol: apis.protocol, status: apis.status })
           .from(apis)
           .where(eq(apis.serviceId, service.id)),
+        this.db
+          .select({ id: documents.id, title: documents.title, slug: documents.slug, category: documents.category })
+          .from(documents)
+          .where(eq(documents.serviceId, service.id)),
       ]);
 
     const dependencyNames = await this.resolveDependencyNames(dependencies);
@@ -214,6 +229,7 @@ export class ServicesService {
       incidents: affectedIncidents,
       metrics: Array.from(latestMetricByName.values()),
       apis: serviceApis,
+      documents: serviceDocuments,
     };
   }
 

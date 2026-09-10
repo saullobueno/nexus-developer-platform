@@ -56,6 +56,7 @@ const detail = {
   incidents: [],
   metrics: [{ name: "request_rate", value: 150, unit: "req/s", timestamp: new Date().toISOString() }],
   apis: [{ id: "api1", name: "payments-api", slug: "payments-api", protocol: "rest", status: "active" }],
+  documents: [{ id: "doc1", title: "Arquitetura de Pagamentos", slug: "arquitetura-de-pagamentos", category: "architecture" }],
 };
 
 describe("ServiceDetailPage", () => {

@@ -15,6 +15,8 @@ export const BASELINE_PERMISSIONS = [
   "incidents:read",
   "incidents:create",
   "incidents:update",
+  "apis:read",
+  "docs:read",
   "settings:read",
   "settings:update",
 ] as const;
@@ -43,6 +45,8 @@ export const ROLE_PERMISSION_MAP: Record<BaselineRoleSlug, readonly BaselinePerm
     "incidents:read",
     "incidents:create",
     "incidents:update",
+    "apis:read",
+    "docs:read",
     "settings:read",
   ],
   developer: [
@@ -51,8 +55,10 @@ export const ROLE_PERMISSION_MAP: Record<BaselineRoleSlug, readonly BaselinePerm
     "deployments:create",
     "incidents:read",
     "incidents:create",
+    "apis:read",
+    "docs:read",
   ],
-  viewer: ["services:read", "deployments:read", "incidents:read", "settings:read"],
+  viewer: ["services:read", "deployments:read", "incidents:read", "apis:read", "docs:read", "settings:read"],
 };
 
 export async function seedBaseline(db: DatabaseClient, organizationName = "Acme Engineering") {

@@ -79,7 +79,7 @@ export function ServiceDetailPage({ slug }: { slug: string }) {
           <DependenciesTab detail={data} />
         </TabsContent>
         <TabsContent value="documentation">
-          <DocumentationTab />
+          <DocumentationTab detail={data} />
         </TabsContent>
         <TabsContent value="incidents">
           <IncidentsTab detail={data} />

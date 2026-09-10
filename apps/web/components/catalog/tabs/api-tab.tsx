@@ -1,4 +1,5 @@
 import { Badge } from "@nexus/ui";
+import Link from "next/link";
 import type { ServiceDetail } from "../../../lib/services";
 
 export function ApiTab({ detail }: { detail: ServiceDetail }) {
@@ -11,7 +12,9 @@ export function ApiTab({ detail }: { detail: ServiceDetail }) {
       {detail.apis.map((api) => (
         <li key={api.id} className="flex items-center justify-between px-4 py-3 text-sm">
           <div>
-            <p className="font-medium">{api.name}</p>
+            <Link href={`/apis/${api.slug}`} className="font-medium hover:underline">
+              {api.name}
+            </Link>
             <p className="text-xs uppercase text-muted-foreground">{api.protocol}</p>
           </div>
           <Badge variant={api.status === "active" ? "success" : "outline"}>{api.status}</Badge>

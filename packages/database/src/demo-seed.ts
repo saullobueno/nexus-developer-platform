@@ -428,10 +428,19 @@ export async function seedDemoData(db: DatabaseClient) {
   }
 
   const apiServiceNames = ["payments-api", "identity-api", "customer-api", "analytics-api"];
+  const API_PROTOCOL_OVERRIDES: Record<string, "rest" | "graphql" | "grpc" | "websocket"> = {
+    "identity-api": "graphql",
+  };
+  const API_STATUS_OVERRIDES: Record<string, "active" | "deprecated" | "retired"> = {
+    "analytics-api": "deprecated",
+  };
   for (const serviceName of apiServiceNames) {
     const serviceId = serviceIdByName.get(serviceName);
     const serviceDef = SERVICES.find((service) => service.name === serviceName);
     if (!serviceId || !serviceDef) continue;
+
+    const protocol = API_PROTOCOL_OVERRIDES[serviceName] ?? "rest";
+    const status = API_STATUS_OVERRIDES[serviceName] ?? "active";
 
     const apiRows = await db
       .insert(apis)
@@ -442,9 +451,9 @@ export async function seedDemoData(db: DatabaseClient) {
         name: serviceName,
         slug: serviceName,
         version: "1.0.0",
-        status: "active",
-        protocol: "rest",
-        description: `API REST de ${serviceName}.`,
+        status,
+        protocol,
+        description: `API ${protocol.toUpperCase()} de ${serviceName}.`,
       })
       .onConflictDoNothing({ target: apis.slug })
       .returning();
@@ -452,9 +461,22 @@ export async function seedDemoData(db: DatabaseClient) {
     const api = apiRows[0];
     if (!api) continue;
 
+    const resourceName = serviceName.split("-")[0];
+    const isPayments = serviceName === "payments-api";
     await db.insert(apiEndpoints).values([
-      { apiId: api.id, method: "GET", path: `/${serviceName.split("-")[0]}`, description: "Lista recursos" },
-      { apiId: api.id, method: "POST", path: `/${serviceName.split("-")[0]}`, description: "Cria um recurso" },
+      { apiId: api.id, method: "GET", path: `/${resourceName}`, description: "Lista recursos" },
+      {
+        apiId: api.id,
+        method: "POST",
+        path: `/${resourceName}`,
+        description: "Cria um recurso",
+        requestSchema: isPayments
+          ? { type: "object", required: ["amount", "currency"], properties: { amount: { type: "number" }, currency: { type: "string" } } }
+          : null,
+        responseSchema: isPayments
+          ? { type: "object", properties: { id: { type: "string" }, status: { type: "string" } } }
+          : null,
+      },
     ]);
 
     if (serviceName === "payments-api") {
@@ -468,6 +490,8 @@ export async function seedDemoData(db: DatabaseClient) {
   }
 
   const adminUserId = userIdByEmail.get("admin@acme.test");
+  const paymentsServiceId = serviceIdByName.get("payments-api");
+  const checkoutServiceId = serviceIdByName.get("checkout-web");
   await db.insert(documents).values([
     {
       organizationId: organization.id,
@@ -475,27 +499,70 @@ export async function seedDemoData(db: DatabaseClient) {
       title: "Getting Started",
       slug: "getting-started",
       category: "getting_started",
-      content: "# Getting Started\n\nComo configurar o ambiente local do Nexus e rodar os services da Acme Engineering.",
+      content:
+        "# Getting Started\n\nComo configurar o ambiente local do Nexus e rodar os services da Acme Engineering.",
     },
     {
       organizationId: organization.id,
       authorId: adminUserId,
+      serviceId: paymentsServiceId,
       title: "Arquitetura de Pagamentos",
       slug: "arquitetura-de-pagamentos",
       category: "architecture",
-      content: "# Arquitetura de Pagamentos\n\npayments-api concentra a integração com o provider de pagamento externo.",
+      content:
+        "# Arquitetura de Pagamentos\n\npayments-api concentra a integração com o provider de pagamento externo.",
+    },
+    {
+      organizationId: organization.id,
+      authorId: adminUserId,
+      serviceId: paymentsServiceId,
+      title: "Runbook: payments-api fora do ar",
+      slug: "runbook-payments-api-fora-do-ar",
+      category: "runbooks",
+      content:
+        "# Runbook: payments-api fora do ar\n\n1. Verificar dashboard de Observability do serviço.\n2. Checar status do provider de pagamento externo.\n3. Se necessário, acionar rollback do último deployment.",
+    },
+    {
+      organizationId: organization.id,
+      authorId: adminUserId,
+      serviceId: checkoutServiceId,
+      title: "Runbook: checkout-web com erro elevado",
+      slug: "runbook-checkout-web-erro-elevado",
+      category: "runbooks",
+      content:
+        "# Runbook: checkout-web com erro elevado\n\n1. Consultar Errors em Observability agrupados por tipo.\n2. Confirmar se payments-api está saudável (é a principal dependência).\n3. Abrir um incidente se a taxa de erro persistir acima de 5%.",
+    },
+    {
+      organizationId: organization.id,
+      authorId: adminUserId,
+      title: "Padrões de Engenharia",
+      slug: "padroes-de-engenharia",
+      category: "engineering_standards",
+      content:
+        "# Padrões de Engenharia\n\nTypeScript strict em todo lugar, autorização sempre no backend e testes cobrindo loading/empty/error/success.",
     },
   ]);
 
-  await db.insert(adrs).values({
-    organizationId: organization.id,
-    title: "Escolha de mensageria para notifications-worker",
-    status: "accepted",
-    context: "notifications-worker precisava de uma fila confiável para processar notificações assíncronas.",
-    decision: "Adotar Redis + BullMQ para a fila de notificações.",
-    consequences: "Requer um Redis disponível em todos os ambientes; simplifica retries e backoff.",
-    alternatives: "SQS (descartado por acoplar a AWS), RabbitMQ (descartado por overhead operacional maior).",
-  });
+  await db.insert(adrs).values([
+    {
+      organizationId: organization.id,
+      title: "Escolha de mensageria para notifications-worker",
+      status: "accepted",
+      context: "notifications-worker precisava de uma fila confiável para processar notificações assíncronas.",
+      decision: "Adotar Redis + BullMQ para a fila de notificações.",
+      consequences: "Requer um Redis disponível em todos os ambientes; simplifica retries e backoff.",
+      alternatives: "SQS (descartado por acoplar a AWS), RabbitMQ (descartado por overhead operacional maior).",
+    },
+    {
+      organizationId: organization.id,
+      title: "identity-api migra de REST para GraphQL",
+      status: "proposed",
+      context: "Consumidores internos frequentemente precisam de combinações diferentes de campos de usuário/permissões, gerando endpoints REST sob medida.",
+      decision: "Expor um schema GraphQL único para identity-api, mantendo REST em modo deprecated durante a transição.",
+      consequences: "Consumidores precisam migrar suas integrações; observability de GraphQL exige tratamento diferente de erros por operação.",
+      alternatives: "Manter REST e adicionar endpoints agregadores (descartado por perpetuar o problema de N endpoints sob medida).",
+    },
+  ]);
 
   for (const flag of FEATURE_FLAGS) {
     const flagRows = await db

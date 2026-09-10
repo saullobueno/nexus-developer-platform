@@ -2,7 +2,7 @@
 
 Internal Developer Portal (IDP) production-grade: catálogo de serviços, deployments, incidentes, observability, feature flags, pipelines, integrações e um AI Engineering Copilot — construído para demonstrar React/TypeScript avançado, full-stack, monorepo, platform engineering, observability, RBAC, integrações e AI agents.
 
-> **Status atual: Phase 8 — Observability.** Foundation, Database, Auth/RBAC, Demo Mode, Home, Service Catalog, Deployments e Incidents completos. `/observability` cobre Metrics (séries por range com gráficos ECharts), Logs (busca com sintaxe `level:`/`service:`/`trace:`), Traces (lista + waterfall de spans) e Errors (agrupados por tipo/serviço) — todas as queries escopadas por `organizationId` do usuário autenticado, nunca por IDs vindos do cliente. Ver `NEXUS-SPECIFICATION.md` para a especificação completa e o roadmap de fases.
+> **Status atual: Phase 9 — APIs/Docs.** Foundation, Database, Auth/RBAC, Demo Mode, Home, Service Catalog, Deployments, Incidents e Observability completos. `/apis` traz o catálogo de APIs (REST/GraphQL/gRPC/WebSocket) com detail em abas (Overview, Endpoints, Schema, Documentation, Consumers, Health, Activity); `/docs` cobre Documentation (Getting Started, Architecture, Runbooks etc., renderizado em Markdown) e ADRs (Title/Status/Context/Decision/Consequences/Alternatives). A tab "Documentation" do Service Catalog agora mostra de fato os documentos vinculados ao serviço. Ver `NEXUS-SPECIFICATION.md` para a especificação completa e o roadmap de fases.
 
 ## Stack
 

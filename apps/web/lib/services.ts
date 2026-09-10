@@ -92,6 +92,7 @@ export interface ServiceDetail {
   }>;
   metrics: Array<{ name: string; value: number; unit: string | null; timestamp: string }>;
   apis: Array<{ id: string; name: string; slug: string; protocol: string; status: string }>;
+  documents: Array<{ id: string; title: string; slug: string; category: string }>;
 }
 
 export function getServiceBySlug(slug: string): Promise<ServiceDetail> {
