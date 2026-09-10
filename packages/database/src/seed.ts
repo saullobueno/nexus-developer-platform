@@ -21,6 +21,8 @@ export const BASELINE_PERMISSIONS = [
   "feature_flags:update",
   "teams:read",
   "reports:read",
+  "ai_copilot:read",
+  "ai_copilot:use",
   "settings:read",
   "settings:update",
 ] as const;
@@ -55,6 +57,8 @@ export const ROLE_PERMISSION_MAP: Record<BaselineRoleSlug, readonly BaselinePerm
     "feature_flags:update",
     "teams:read",
     "reports:read",
+    "ai_copilot:read",
+    "ai_copilot:use",
     "settings:read",
   ],
   developer: [
@@ -68,6 +72,8 @@ export const ROLE_PERMISSION_MAP: Record<BaselineRoleSlug, readonly BaselinePerm
     "feature_flags:read",
     "teams:read",
     "reports:read",
+    "ai_copilot:read",
+    "ai_copilot:use",
   ],
   viewer: [
     "services:read",
@@ -78,6 +84,7 @@ export const ROLE_PERMISSION_MAP: Record<BaselineRoleSlug, readonly BaselinePerm
     "feature_flags:read",
     "teams:read",
     "reports:read",
+    "ai_copilot:read",
     "settings:read",
   ],
 };

@@ -7,7 +7,9 @@ export type RealtimeEventType =
   | "deployment.completed"
   | "incident.created"
   | "incident.updated"
-  | "incident.resolved";
+  | "incident.resolved"
+  | "ai.run.started"
+  | "ai.run.completed";
 
 export interface RealtimeEvent<T = unknown> {
   organizationId: string;
