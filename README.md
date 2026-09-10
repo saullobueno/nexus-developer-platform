@@ -2,7 +2,7 @@
 
 Internal Developer Portal (IDP) production-grade: catálogo de serviços, deployments, incidentes, observability, feature flags, pipelines, integrações e um AI Engineering Copilot — construído para demonstrar React/TypeScript avançado, full-stack, monorepo, platform engineering, observability, RBAC, integrações e AI agents.
 
-> **Status atual: Phase 6 — Deployments.** Foundation, Database, Auth/RBAC, Demo Mode, Home e Service Catalog completos. `/deployments` e `/deployments/[id]` mostram o histórico real, pipeline/stages e logs, com ações de cancel/retry/rollback (confirmação obrigatória, RBAC e audit log). Progressão ao vivo/realtime fica para a Phase 14 (ver ADR 0006). As demais features de produto (incidentes, observability dedicados, etc.) chegam nas próximas fases. Ver `NEXUS-SPECIFICATION.md` para a especificação completa e o roadmap de fases.
+> **Status atual: Phase 7 — Incidents.** Foundation, Database, Auth/RBAC, Demo Mode, Home, Service Catalog e Deployments completos. `/incidents` e `/incidents/[id]` cobrem criação, severity/status/owner, timeline/comunicações, serviços afetados, deployments relacionados, métricas/logs e postmortem — tudo com RBAC e audit log. O AI Incident Copilot (read-only, explicando evidências) fica para a Phase 15, quando o AI Gateway existir. Ver `NEXUS-SPECIFICATION.md` para a especificação completa e o roadmap de fases.
 
 ## Stack
 

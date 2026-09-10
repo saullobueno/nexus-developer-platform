@@ -18,6 +18,7 @@ export const incidents = pgTable(
     severity: incidentSeverityEnum("severity").notNull().default("sev3"),
     status: incidentStatusEnum("status").notNull().default("investigating"),
     ownerId: uuid("owner_id").references(() => users.id, { onDelete: "set null" }),
+    postmortem: text("postmortem"),
     detectedAt: timestamp("detected_at", { withTimezone: true }).notNull().defaultNow(),
     resolvedAt: timestamp("resolved_at", { withTimezone: true }),
     ...timestamps,

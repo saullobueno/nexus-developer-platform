@@ -2,7 +2,6 @@ import { BadRequestException, Inject, Injectable, NotFoundException } from "@nes
 import type { AuthenticatedUser } from "@nexus/auth";
 import type { DatabaseClient } from "@nexus/database";
 import {
-  auditLogs,
   deploymentLogs,
   deploymentStatusEnum,
   deployments,
@@ -13,6 +12,7 @@ import {
   users,
 } from "@nexus/database";
 import { and, count, desc, eq, lt } from "drizzle-orm";
+import { AuditService } from "../common/audit.service";
 import { DATABASE_CLIENT } from "../database/database.constants";
 import type { ListDeploymentsQuery } from "./dto/list-deployments.dto";
 
@@ -24,7 +24,10 @@ const CANCELLABLE_STATUSES = ["queued", "running"] as const;
 
 @Injectable()
 export class DeploymentsService {
-  constructor(@Inject(DATABASE_CLIENT) private readonly db: DatabaseClient) {}
+  constructor(
+    @Inject(DATABASE_CLIENT) private readonly db: DatabaseClient,
+    private readonly auditService: AuditService,
+  ) {}
 
   async list(organizationId: string, query: ListDeploymentsQuery) {
     const conditions = [eq(services.organizationId, organizationId)];
@@ -116,7 +119,15 @@ export class DeploymentsService {
       .where(eq(deployments.id, id))
       .returning();
 
-    await this.recordAudit(organizationId, actor.id, "deployment.cancel", id, scoped.deployment, updated);
+    await this.auditService.record({
+      organizationId,
+      actorId: actor.id,
+      action: "deployment.cancel",
+      resource: "deployment",
+      resourceId: id,
+      before: scoped.deployment,
+      after: updated,
+    });
     return updated;
   }
 
@@ -140,7 +151,14 @@ export class DeploymentsService {
       })
       .returning();
 
-    await this.recordAudit(organizationId, actor.id, "deployment.retry", created!.id, null, created);
+    await this.auditService.record({
+      organizationId,
+      actorId: actor.id,
+      action: "deployment.retry",
+      resource: "deployment",
+      resourceId: created!.id,
+      after: created,
+    });
     return created;
   }
 
@@ -191,9 +209,14 @@ export class DeploymentsService {
       })
       .returning();
 
-    await this.recordAudit(organizationId, actor.id, "deployment.rollback", id, scoped.deployment, {
-      rolledBack,
-      created,
+    await this.auditService.record({
+      organizationId,
+      actorId: actor.id,
+      action: "deployment.rollback",
+      resource: "deployment",
+      resourceId: id,
+      before: scoped.deployment,
+      after: { rolledBack, created },
     });
 
     return created;
@@ -220,24 +243,5 @@ export class DeploymentsService {
       throw new NotFoundException("Deployment não encontrado");
     }
     return result;
-  }
-
-  private async recordAudit(
-    organizationId: string,
-    actorId: string,
-    action: string,
-    resourceId: string,
-    before: unknown,
-    after: unknown,
-  ) {
-    await this.db.insert(auditLogs).values({
-      organizationId,
-      actorId,
-      action,
-      resource: "deployment",
-      resourceId,
-      before: before ?? null,
-      after: after ?? null,
-    });
   }
 }
