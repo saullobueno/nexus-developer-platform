@@ -38,7 +38,7 @@ apps/web            Next.js — frontend
 apps/api            NestJS — backend
 apps/docs           placeholder — escopo definido na Phase 9
 packages/ui          design system (shadcn/ui) — source-only, sem build step
-packages/database     Drizzle ORM + client Postgres — schema real chega na Phase 1
+packages/database     Drizzle ORM + client Postgres — schema completo (Phase 1), testado via pglite
 packages/auth         RBAC/autenticação — Phase 2
 packages/ai           AI Gateway/Copilot — Phase 15
 packages/integrations adapters (GitHub/Sentry/Grafana/Slack/Mock) — Phase 13
@@ -72,3 +72,4 @@ Pacotes consumidos por `apps/api` (backend, precisa de JS compilado em runtime) 
 
 - Docker não estava disponível no ambiente em que a Phase 0 foi criada — `docker-compose.yml` existe mas não foi validado localmente rodando; validar antes de depender dele em CI/dev.
 - `DEMO_MODE=true` (ver `.env.example`) deve permitir rodar o produto sem credenciais externas, usando mock adapters (Phase 3).
+- Os testes de integração de `packages/database` rodam contra **pglite** (Postgres real em WASM, sem Docker) — ver `docs/decisions/0002-database-schema-and-testing.md`. Isso não substitui ter um Postgres real via `docker-compose.yml` para desenvolvimento/produção.

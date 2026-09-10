@@ -1,3 +1,14 @@
-// As tabelas do data model (User, Service, Deployment, Incident, ...) são
-// adicionadas aqui a partir da Phase 1, conforme a spec seção 23.
-export {};
+export * from "./enums";
+export * from "./organizations";
+export * from "./identity";
+export * from "./catalog";
+export * from "./deployments";
+export * from "./pipelines";
+export * from "./incidents";
+export * from "./observability";
+export * from "./apis";
+export * from "./documentation";
+export * from "./feature-flags";
+export * from "./integrations";
+export * from "./notifications";
+export * from "./ai";

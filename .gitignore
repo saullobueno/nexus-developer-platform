@@ -38,6 +38,3 @@ Thumbs.db
 .vscode/*
 !.vscode/extensions.json
 .idea/
-
-# drizzle
-packages/database/drizzle/meta/
