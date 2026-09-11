@@ -25,3 +25,7 @@ Documentação que descreve infraestrutura inexistente como se existisse é pior
 ## Consequências
 - `pnpm dev`/`docker compose up -d` ficam mais simples e honestos: só o que é realmente necessário.
 - Se uma fase futura (fora do roadmap de 20 fases) introduzir um job real (ex.: processamento assíncrono de webhooks outbound, mencionado como gap na ADR 0016), Redis/BullMQ voltam a ser candidatos naturais — a decisão de não tê-los hoje não é permanente, só reflete o que existe agora.
+
+## Addendum — vulnerabilidade em dependência transitiva (`multer`)
+
+Uma segunda passagem de QA rodou `pnpm audit --prod` e encontrou 4 advisories (3 high, 1 low) em `multer@2.2.0`, trazido transitivamente por `@nestjs/platform-express` (usado por `apps/api` e `@nexus/auth`, nenhum dos dois expõe upload de arquivo). Como não usamos a funcionalidade do multer, subir a versão não tem risco funcional — adicionado um override em `pnpm-workspace.yaml` (`overrides: { multer: ^2.3.0 }`), a versão publicada que corrige todos os 4 advisories. `pnpm audit --prod` volta limpo depois do `pnpm install`.

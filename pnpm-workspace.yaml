@@ -5,3 +5,8 @@ packages:
 allowBuilds:
   '@swc/core': true
   esbuild: true
+overrides:
+  # multer é dependência transitiva de @nestjs/platform-express (não usamos
+  # upload de arquivo em nenhuma feature) — 2.2.0 tem 4 advisories conhecidos
+  # (3 high, 1 low), todos corrigidos em 2.3.0.
+  multer: ^2.3.0

@@ -36,7 +36,7 @@ Para rodar em um único pacote: `pnpm --filter web dev`, `pnpm --filter api test
 ```text
 apps/web            Next.js — frontend
 apps/api            NestJS — backend
-apps/docs           placeholder — escopo definido na Phase 9
+apps/docs           placeholder — a feature de documentação (Phase 9) acabou vivendo em apps/web (/docs, /docs/adrs); apps/docs segue vazio, sem escopo próprio
 packages/ui          design system (shadcn/ui) — source-only, sem build step
 packages/database     Drizzle ORM + client Postgres — schema completo (Phase 1), testado via pglite
 packages/auth         JWT + RBAC (Phase 2) — guards/decorators desacoplados de @nexus/database
