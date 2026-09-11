@@ -31,7 +31,24 @@ import { DATABASE_CLIENT } from "../database/database.constants";
 import { AuthService } from "./auth.service";
 import { loginSchema, type LoginDto } from "./dto/login.dto";
 
-const isProduction = process.env.NODE_ENV === "production";
+function isProduction(): boolean {
+  return process.env.NODE_ENV === "production";
+}
+
+// Em produção, apps/web (Vercel) e apps/api (host separado, ver ADR 0019)
+// ficam em domínios diferentes — cookie realmente cross-site precisa de
+// `sameSite: "none"` (só é aceito pelo browser com `secure: true`) para ser
+// enviado em fetch() com credentials:"include". Em dev, localhost:3000 →
+// localhost:3001 é cross-port mas same-site, então "lax" já funciona e evita
+// exigir HTTPS local.
+function authCookieOptions() {
+  const production = isProduction();
+  return {
+    httpOnly: true,
+    secure: production,
+    sameSite: (production ? "none" : "lax") as "none" | "lax",
+  };
+}
 
 @Controller("auth")
 export class AuthController {
@@ -47,9 +64,7 @@ export class AuthController {
   async login(@Body() body: LoginDto, @Res({ passthrough: true }) response: Response) {
     const { token, user } = await this.authService.login(body.email, body.password);
     response.cookie(AUTH_COOKIE_NAME, token, {
-      httpOnly: true,
-      secure: isProduction,
-      sameSite: "lax",
+      ...authCookieOptions(),
       maxAge: 1000 * 60 * 60 * 8,
     });
     return { user };
@@ -58,7 +73,7 @@ export class AuthController {
   @Post("logout")
   @HttpCode(HttpStatus.OK)
   logout(@Res({ passthrough: true }) response: Response) {
-    response.clearCookie(AUTH_COOKIE_NAME);
+    response.clearCookie(AUTH_COOKIE_NAME, authCookieOptions());
     return { success: true };
   }
 

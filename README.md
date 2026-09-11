@@ -101,8 +101,12 @@ pnpm --filter @nexus/database db:seed:demo
 
 ## Deploy
 
-- **`apps/web`** (Next.js): compatível diretamente com Vercel.
-- **`apps/api`** (NestJS): expõe realtime via SSE (`GET /realtime/events`, conexão HTTP de longa duração), que não se encaixa bem no modelo de função serverless da Vercel. Recomendado hospedar em um serviço de processo longo (Render, Fly.io, Railway, um VPS) com um Postgres gerenciado real, apontando `WEB_APP_URL`/a URL da API entre os dois serviços. Ver observação completa em `docs/decisions/0019-license-and-deploy-validation-strategy.md`.
+- **`apps/web`** (Next.js) na Vercel: em **Settings → General → Root Directory**, defina `apps/web` (senão a Vercel builda a partir da raiz do monorepo, não reconhece nenhum framework e falha com `No Output Directory named "public" found"`). O Framework Preset deve virar "Next.js" automaticamente depois disso — nenhum build command customizado é necessário.
+- **`apps/api`** (NestJS): expõe realtime via SSE (`GET /realtime/events`, conexão HTTP de longa duração), que não se encaixa bem no modelo de função serverless da Vercel. Hospede em um serviço de processo longo (Render, Fly.io, Railway, um VPS) com um Postgres gerenciado real.
+- **Conectar os dois**:
+  1. No host do `apps/api`: configure `DATABASE_URL`, `JWT_SECRET`, `DEMO_MODE`, `WEB_APP_URL` (URL do `apps/web` na Vercel, para o CORS); rode `pnpm --filter @nexus/database db:migrate` (e `db:seed:demo` para dados de demo) contra o Postgres real.
+  2. Na Vercel: configure `NEXT_PUBLIC_API_URL` = URL pública do `apps/api` e redeploye o `apps/web` (variáveis `NEXT_PUBLIC_*` são embutidas em build-time).
+- Os dois serviços ficam em domínios diferentes em produção, então o cookie de sessão usa `sameSite: "none"` (com `secure: true`) quando `NODE_ENV=production` — em dev continua `"lax"` (`localhost:3000`↔`localhost:3001` é cross-port mas same-site). Ver detalhamento completo (incluindo os dois erros reais encontrados no primeiro deploy) em `docs/decisions/0019-license-and-deploy-validation-strategy.md`.
 
 ## Estrutura
 

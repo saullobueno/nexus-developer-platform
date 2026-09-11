@@ -87,6 +87,19 @@ describe("Auth (e2e)", () => {
     expect(cookie).toMatch(/HttpOnly/i);
   });
 
+  it("usa SameSite=None em produção (apps/web e apps/api ficam em domínios diferentes)", async () => {
+    const originalEnv = process.env.NODE_ENV;
+    process.env.NODE_ENV = "production";
+    try {
+      const { response, cookie } = await loginAsAdmin();
+      expect(response.status).toBe(200);
+      expect(cookie).toMatch(/SameSite=None/i);
+      expect(cookie).toMatch(/Secure/i);
+    } finally {
+      process.env.NODE_ENV = originalEnv;
+    }
+  });
+
   it("nega acesso a /auth/me sem cookie", async () => {
     const response = await request(app.getHttpServer()).get("/auth/me");
     expect(response.status).toBe(401);
