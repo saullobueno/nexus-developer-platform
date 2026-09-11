@@ -20,3 +20,9 @@ Duas decisões pendentes de dono do produto (não técnicas, não deriváveis do
 ## Consequências
 - `docker-compose.yml` continua no repo como referência para quem quiser rodar localmente com Docker, mas deixa de ser um passo esperado do workflow do autor.
 - Primeira execução real do `.github/workflows/ci.yml` acontece só depois do primeiro push — qualquer diferença de ambiente (Node 20 no CI vs. 24 local, instalação do Playwright em Ubuntu) só será conhecida nesse momento, não antes.
+
+## Addendum — a primeira execução do CI falhou, exatamente como previsto acima
+
+O job `test` falhou no `packages/ui` (e teria falhado depois em `apps/web`, que usa a mesma stack de testes) com `TypeError: webidl.util.markAsUncloneable is not a function`, lançado de dentro de `undici@8.10.2` ao ser importado pelo `jsdom@30.0.1` (usado pelo ambiente de teste do Vitest). Causa: `jsdom@^30` depende de uma API interna do Node (`webidl.util.markAsUncloneable`) que não existe no Node 20 — só foi possível reproduzir porque o CI, pela primeira vez, rodou em Node 20 (`NODE_VERSION` do workflow), enquanto todo o desenvolvimento local sempre rodou em Node 24.12, onde a API existe. `pnpm lint` e `pnpm typecheck` passaram normalmente em Node 20 (não dependem de jsdom em runtime); só `test` expôs o problema.
+
+**Correção**: `NODE_VERSION` em `.github/workflows/ci.yml` alterado de `"20"` para `"24"`, e `engines.node` em `package.json` corrigido de `>=20.11.0` (nunca verificado de fato) para `>=24.0.0` (a única versão realmente testada, em CI e localmente, do início ao fim do projeto). Não foi feita nenhuma tentativa de fixar isso "para trás" (ex.: downgrade de `jsdom`) — declarar o requisito real de Node é mais simples e mais honesto do que manter uma dependência mais nova artificialmente compatível com uma versão de Node que nunca foi o alvo real deste projeto.

@@ -8,7 +8,7 @@ Instruções para agentes de codificação trabalhando neste repositório (equiv
 pnpm install
 ```
 
-Requer pnpm (`packageManager` no `package.json` raiz fixa a versão). Node >= 20.11.
+Requer pnpm (`packageManager` no `package.json` raiz fixa a versão). Node >= 24 (`jsdom@30` usa uma API interna do Node que não existe em versões mais antigas — ver `docs/decisions/0019-license-and-deploy-validation-strategy.md`, addendum).
 
 ## Comandos de verificação (rodar antes de considerar uma mudança pronta)
 
