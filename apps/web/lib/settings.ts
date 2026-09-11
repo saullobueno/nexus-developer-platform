@@ -83,3 +83,26 @@ export function listAuditLogs(params: { resource?: string; action?: string; page
   const queryString = query.toString();
   return apiFetch(`/settings/audit-logs${queryString ? `?${queryString}` : ""}`);
 }
+
+export interface Webhook {
+  id: string;
+  url: string;
+  events: string[];
+  createdAt: string;
+}
+
+export interface WebhookWithSecret extends Webhook {
+  secret: string;
+}
+
+export function listWebhooks(): Promise<Webhook[]> {
+  return apiFetch("/webhooks");
+}
+
+export function createWebhook(input: { url: string; events: string[] }): Promise<WebhookWithSecret> {
+  return apiFetch("/webhooks", { method: "POST", body: JSON.stringify(input) });
+}
+
+export function deleteWebhook(id: string): Promise<{ success: boolean }> {
+  return apiFetch(`/webhooks/${id}`, { method: "DELETE" });
+}

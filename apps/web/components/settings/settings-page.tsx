@@ -7,13 +7,16 @@ import { IntegrationsTab } from "./integrations-tab";
 import { MembersTab } from "./members-tab";
 import { OrganizationTab } from "./organization-tab";
 import { RolesTab } from "./roles-tab";
+import { WebhooksTab } from "./webhooks-tab";
 
 export function SettingsPage() {
   return (
     <div className="space-y-6 p-6">
       <div>
         <h1 className="text-2xl font-semibold tracking-tight">Settings</h1>
-        <p className="text-sm text-muted-foreground">Organization, Members, Roles, Environments, Integrations e Audit Logs</p>
+        <p className="text-sm text-muted-foreground">
+          Organization, Members, Roles, Environments, Integrations, Webhooks e Audit Logs
+        </p>
       </div>
 
       <Tabs defaultValue="organization">
@@ -23,6 +26,7 @@ export function SettingsPage() {
           <TabsTrigger value="roles">Roles</TabsTrigger>
           <TabsTrigger value="environments">Environments</TabsTrigger>
           <TabsTrigger value="integrations">Integrations</TabsTrigger>
+          <TabsTrigger value="webhooks">Webhooks</TabsTrigger>
           <TabsTrigger value="audit-logs">Audit Logs</TabsTrigger>
         </TabsList>
 
@@ -40,6 +44,9 @@ export function SettingsPage() {
         </TabsContent>
         <TabsContent value="integrations">
           <IntegrationsTab />
+        </TabsContent>
+        <TabsContent value="webhooks">
+          <WebhooksTab />
         </TabsContent>
         <TabsContent value="audit-logs">
           <AuditLogsTab />

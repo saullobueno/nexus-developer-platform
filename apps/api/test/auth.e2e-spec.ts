@@ -120,4 +120,17 @@ describe("Auth (e2e)", () => {
 
     expect(response.status).toBe(403);
   });
+
+  it("aplica rate limiting mais restrito em /auth/login para mitigar brute-force", async () => {
+    let sawTooManyRequests = false;
+    for (let attempt = 0; attempt < 30 && !sawTooManyRequests; attempt++) {
+      const response = await request(app.getHttpServer())
+        .post("/auth/login")
+        .send({ email: "admin@acme.test", password: "wrong-password" });
+      if (response.status === 429) {
+        sawTooManyRequests = true;
+      }
+    }
+    expect(sawTooManyRequests).toBe(true);
+  });
 });

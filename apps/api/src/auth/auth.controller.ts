@@ -23,6 +23,7 @@ import {
 } from "@nexus/auth";
 import type { DatabaseClient } from "@nexus/database";
 import { users } from "@nexus/database";
+import { Throttle } from "@nestjs/throttler";
 import { eq } from "drizzle-orm";
 import type { Response } from "express";
 import { ZodValidationPipe } from "../common/zod-validation.pipe";
@@ -41,6 +42,7 @@ export class AuthController {
 
   @Post("login")
   @HttpCode(HttpStatus.OK)
+  @Throttle({ default: { ttl: 60_000, limit: 10 } })
   @UsePipes(new ZodValidationPipe(loginSchema))
   async login(@Body() body: LoginDto, @Res({ passthrough: true }) response: Response) {
     const { token, user } = await this.authService.login(body.email, body.password);

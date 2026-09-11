@@ -1,5 +1,7 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
+import { APP_GUARD } from "@nestjs/core";
+import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler";
 import { AppController } from "./app.controller";
 import { AiCopilotModule } from "./ai-copilot/ai-copilot.module";
 import { ApisModule } from "./apis/apis.module";
@@ -19,10 +21,12 @@ import { ReportsModule } from "./reports/reports.module";
 import { ServicesModule } from "./services/services.module";
 import { SettingsModule } from "./settings/settings.module";
 import { TeamsModule } from "./teams/teams.module";
+import { WebhooksModule } from "./webhooks/webhooks.module";
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    ThrottlerModule.forRoot([{ ttl: 60_000, limit: 120 }]),
     DatabaseModule,
     CommonModule,
     RealtimeModule,
@@ -41,7 +45,9 @@ import { TeamsModule } from "./teams/teams.module";
     IntegrationsModule,
     AiCopilotModule,
     SettingsModule,
+    WebhooksModule,
   ],
   controllers: [AppController],
+  providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
 })
 export class AppModule {}

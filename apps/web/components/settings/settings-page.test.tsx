@@ -27,9 +27,14 @@ vi.mock("../../hooks/use-integrations", () => ({
 vi.mock("../../hooks/use-audit-logs", () => ({
   useAuditLogs: () => ({ isLoading: true, isError: false, data: undefined }),
 }));
+vi.mock("../../hooks/use-webhooks", () => ({
+  useWebhooks: () => ({ isLoading: true, isError: false, data: undefined }),
+}));
 vi.mock("../../lib/settings", () => ({
   updateOrganization: vi.fn(),
   updateMemberRole: vi.fn(),
+  createWebhook: vi.fn(),
+  deleteWebhook: vi.fn(),
 }));
 
 function renderWithQueryClient(ui: ReactElement) {
