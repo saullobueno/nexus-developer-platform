@@ -2,7 +2,7 @@
 
 Internal Developer Portal (IDP) production-grade: catálogo de serviços, deployments, incidentes, observability, feature flags, pipelines, times, relatórios, integrações, realtime e um AI Engineering Copilot com tool calling real e aprovação humana. Construído fase a fase (20 fases, ver `NEXUS-SPECIFICATION.md`) para demonstrar **React + TypeScript + Full-stack + Monorepo + Platform Engineering + Observability + Realtime + RBAC + Integrations + AI Agents + Testing + Security + Product Design**.
 
-> **Status: todas as 20 fases do roadmap concluídas** (Foundation → Documentation/Final QA). A spec (`NEXUS-SPECIFICATION.md` seção 34) enumera 21 itens porque separa Settings e Audit; na implementação, as duas foram tratadas como uma única fase (Phase 16) por compartilharem a mesma tela (`/settings`) e o mesmo `SettingsService` — daí 20 fases em vez de 21. Cada fase foi implementada, testada (`pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm test:e2e`) e commitada isoladamente — ver histórico de commits e `docs/decisions/` (18 ADRs) para o racional de cada decisão não trivial.
+> **Status: todas as 20 fases do roadmap concluídas** (Foundation → Documentation/Final QA). A spec (`NEXUS-SPECIFICATION.md` seção 34) enumera 21 itens porque separa Settings e Audit; na implementação, as duas foram tratadas como uma única fase (Phase 16) por compartilharem a mesma tela (`/settings`) e o mesmo `SettingsService` — daí 20 fases em vez de 21. Cada fase foi implementada, testada (`pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm test:e2e`) e commitada isoladamente — ver histórico de commits e `docs/decisions/` (19 ADRs) para o racional de cada decisão não trivial.
 
 ## Screenshots
 
@@ -97,12 +97,19 @@ pnpm --filter @nexus/database db:seed:demo
 
 `DEMO_MODE=true` (padrão) faz o produto funcionar de ponta a ponta sem nenhuma credencial externa — integrações usam `MockAdapter`, e o AI Copilot usa o orchestrator demo (determinístico, sem chamada de rede). Para usar o AI Copilot real, defina `ANTHROPIC_API_KEY` ou `OPENAI_API_KEY` em `apps/api/.env`.
 
+`docker-compose.yml` nunca foi executado na máquina de desenvolvimento (sem Docker local, por escolha do autor) — a validação de Postgres containerizado/real acontece no CI (`.github/workflows/ci.yml`, Ubuntu) e no ambiente de deploy, não localmente. Ver `docs/decisions/0019-license-and-deploy-validation-strategy.md`.
+
+## Deploy
+
+- **`apps/web`** (Next.js): compatível diretamente com Vercel.
+- **`apps/api`** (NestJS): expõe realtime via SSE (`GET /realtime/events`, conexão HTTP de longa duração), que não se encaixa bem no modelo de função serverless da Vercel. Recomendado hospedar em um serviço de processo longo (Render, Fly.io, Railway, um VPS) com um Postgres gerenciado real, apontando `WEB_APP_URL`/a URL da API entre os dois serviços. Ver observação completa em `docs/decisions/0019-license-and-deploy-validation-strategy.md`.
+
 ## Estrutura
 
 ```text
 apps/        web (Next.js), api (NestJS), docs (placeholder)
 packages/    ui, database, auth, ai, integrations, telemetry, config, types
-docs/        architecture, decisions (18 ADRs), product, api, ai
+docs/        architecture, decisions (19 ADRs), product, api, ai
 tests/       e2e (Playwright)
 ```
 
@@ -110,11 +117,15 @@ Detalhes de cada pacote em `CLAUDE.md`. Visão arquitetural completa em `ARCHITE
 
 ## Desenvolvimento assistido por IA
 
-Todo o código deste projeto — as 20 fases do roadmap, testes, ADRs e este README — foi implementado com Claude Code, seguindo um processo disciplinado: plano apresentado antes de mudanças não triviais, uma fase por vez (nunca big-bang), validação completa (`lint && typecheck && test && build && test:e2e`) ao final de cada fase antes de commitar, e 18 ADRs registrando toda decisão não óbvia — incluindo os limites do que foi decidido não construir (ver `docs/decisions/0015-settings-scope-and-honest-gaps.md` e `0018-final-qa-doc-drift-cleanup.md`), em vez de simular funcionalidade sem infraestrutura real por trás.
+Todo o código deste projeto — as 20 fases do roadmap, testes, ADRs e este README — foi implementado com Claude Code, seguindo um processo disciplinado: plano apresentado antes de mudanças não triviais, uma fase por vez (nunca big-bang), validação completa (`lint && typecheck && test && build && test:e2e`) ao final de cada fase antes de commitar, e 19 ADRs registrando toda decisão não óbvia — incluindo os limites do que foi decidido não construir (ver `docs/decisions/0015-settings-scope-and-honest-gaps.md` e `0018-final-qa-doc-drift-cleanup.md`), em vez de simular funcionalidade sem infraestrutura real por trás.
 
 ## Documentação
 
 - `NEXUS-SPECIFICATION.md` — especificação de produto completa.
 - `ARCHITECTURE.md` — visão arquitetural.
-- `docs/decisions/` — 18 ADRs, uma por decisão não trivial, em ordem cronológica pelas fases.
+- `docs/decisions/` — 19 ADRs, uma por decisão não trivial, em ordem cronológica pelas fases.
 - `CLAUDE.md` / `AGENTS.md` — guia para desenvolvimento assistido por agentes de IA.
+
+## Licença
+
+Todos os direitos reservados — ver `LICENSE`. Repositório público para fins de portfólio e avaliação técnica; não é uma licença open source (uso, cópia ou redistribuição do código exigem autorização do autor). Ver `docs/decisions/0019-license-and-deploy-validation-strategy.md`.

@@ -70,7 +70,7 @@ Pacotes consumidos por `apps/api` (backend, precisa de JS compilado em runtime) 
 
 ## Ambiente local conhecido
 
-- Docker não estava disponível no ambiente em que a Phase 0 foi criada — `docker-compose.yml` existe mas não foi validado localmente rodando; validar antes de depender dele em CI/dev.
+- Docker não está disponível na máquina de desenvolvimento (não foi instalado, por escolha do autor) — `docker-compose.yml` nunca rodou localmente. A validação de Postgres containerizado/real fica por conta do CI (`.github/workflows/ci.yml`, Ubuntu) e do ambiente de deploy, não do dev local. Ver ADR `docs/decisions/0019-license-and-deploy-validation-strategy.md`.
 - `DEMO_MODE=true` (ver `.env.example`) deve permitir rodar o produto sem credenciais externas, usando `@nexus/integrations` `MockAdapter`. Para popular um banco local com dados de demonstração completos (times, services, deployments, incidentes, observability, APIs, docs, flags), rode `pnpm --filter @nexus/database db:seed:demo`.
 - Os testes de integração de `packages/database` rodam contra **pglite** (Postgres real em WASM, sem Docker) — ver `docs/decisions/0002-database-schema-and-testing.md`. Isso não substitui ter um Postgres real via `docker-compose.yml` para desenvolvimento/produção.
 - Auth no frontend (`apps/web`) é client-side: `<AuthGuard>` chama `GET /auth/me` (cookie httpOnly) e redireciona para `/login` se falhar. Isso é uma simplificação da Phase 4 — não protege contra flash de conteúdo em SSR nem substitui um middleware/verificação server-side; considerar isso na Phase 17 (Security hardening).

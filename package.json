@@ -2,6 +2,8 @@
   "name": "nexus-developer-platform",
   "version": "0.1.0",
   "private": true,
+  "license": "UNLICENSED",
+  "author": "Saullo Bueno",
   "packageManager": "pnpm@12.3.4",
   "engines": {
     "node": ">=20.11.0"
