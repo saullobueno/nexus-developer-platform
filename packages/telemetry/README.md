@@ -1,3 +1,3 @@
 # @nexus/telemetry
 
-Scaffold vazio. Instrumentação OpenTelemetry (HTTP, PostgreSQL, Redis, BullMQ, AI calls, integrations, WebSockets) é adicionada de forma incremental, à medida que cada subsistema é implementado (ver spec seção 26).
+Scaffold vazio — nunca ficou de pé neste projeto. A ideia original (spec seção 26) era instrumentar Nexus com OpenTelemetry real (HTTP, PostgreSQL, AI calls, integrations) de forma incremental, fase a fase. Na prática, nenhuma fase criou uma necessidade concreta que justificasse instalar `@opentelemetry/*` (ver `CLAUDE.md`: "não instalar dependência sem justificar") — o produto observa dados de *outros* serviços (Observability, Phase 8, sobre `logs`/`metrics`/`traces`/`errors` do schema), mas não instrumenta a si mesmo. Ver `docs/decisions/0018-final-qa-doc-drift-cleanup.md` para o registro dessa lacuna.

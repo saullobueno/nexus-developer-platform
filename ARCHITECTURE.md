@@ -10,23 +10,25 @@ Visão arquitetural de alto nível do Nexus. Para o detalhamento de produto/feat
                          └──────────┬──────────┘
                                     │ HTTPS
                           ┌─────────▼─────────┐
-                          │   apps/web (Next)  │  UI, SSR/streaming, command palette
+                          │   apps/web (Next)  │  UI client-side (AuthGuard + TanStack Query)
                           └─────────┬─────────┘
-                                    │ REST + WebSocket/SSE
+                                    │ REST + SSE
                           ┌─────────▼─────────┐
-                          │   apps/api (Nest)  │  domínio, RBAC, realtime gateway, AI gateway
-                          └───┬────────┬───────┘
-                 ┌────────────┘        └────────────┐
-        ┌────────▼────────┐                 ┌───────▼────────┐
-        │   PostgreSQL     │                 │     Redis      │  cache, filas (BullMQ)
-        │  (via Drizzle)   │                 └────────────────┘
-        └──────────────────┘
+                          │   apps/api (Nest)  │  domínio, RBAC, realtime event bus, AI gateway
+                          └─────────┬─────────┘
+                                    │
+                          ┌─────────▼─────────┐
+                          │   PostgreSQL       │
+                          │  (via Drizzle)     │
+                          └────────────────────┘
                                     │
                      ┌──────────────┴───────────────┐
                      │   packages/integrations       │  adapters (GitHub/Sentry/Grafana/Slack)
                      │   packages/ai                 │  providers (Anthropic/OpenAI) + tools
                      └────────────────────────────────┘
 ```
+
+Sem Redis/BullMQ/WebSocket: nenhuma fase criou uma necessidade real de fila/job em background, e o realtime (Phase 14) é resolvido inteiramente em-processo (RxJS `Subject` + SSE nativo do NestJS/browser) — ver ADR `0013-sse-instead-of-websocket.md`. Adicionar essas peças sem um caso de uso concreto violaria a regra do projeto de não instalar dependência sem justificar.
 
 ## Camadas e separação de responsabilidades
 
@@ -42,11 +44,15 @@ pnpm workspaces + Turborepo. Ver ADR `0001-monorepo-tooling.md` para a justifica
 
 ## Realtime
 
-WebSocket/SSE emitido por `apps/api` para eventos tipados (`deployment.*`, `incident.*`, `service.health.changed`, `notification.created`, `ai.run.*`). Consumido por `apps/web` para atualizar o cache do TanStack Query sem full-page refresh. Implementado na Phase 14.
+Server-Sent Events (`GET /realtime/events`, `@Sse()` do NestJS) emitidos por `apps/api` a partir de um `RealtimeEventBusService` in-process (RxJS `Subject`) para eventos tipados: `deployment.started/updated/completed`, `incident.created/updated/resolved`, `ai.run.started/completed`. Consumido por `apps/web` via `EventSource` nativo do browser (`useRealtimeEvents`), que invalida/atualiza o cache do TanStack Query e dispara toasts sem full-page refresh. Implementado na Phase 14. Limitação conhecida: por ser in-process, não funciona entre múltiplas réplicas do backend sem migrar para um pub/sub distribuído — não implementado por não haver esse requisito hoje (ver ADR `0013-sse-instead-of-websocket.md`).
 
 ## Segurança
 
 Autenticação + RBAC + object-level authorization vivem em `packages/auth`, aplicados no backend (`apps/api`). O frontend nunca é a fonte de verdade de permissão — ele consulta o backend e esconde/mostra UI de acordo, mas o backend rejeita qualquer ação não autorizada independentemente do que o frontend enviar. Nenhum ID recebido do frontend (`organizationId`, `userId`, `serviceId`) é confiável sem checagem de autorização no backend.
+
+## Observability do produto vs. telemetria do próprio Nexus
+
+São duas coisas diferentes, e só a primeira foi implementada. **Observability (produto, Phase 8)**: `apps/web` mostra logs/métricas/traces/erros de serviços cadastrados no catálogo, lidos de `packages/database` (populados por `seedDemoData` ou por adapters reais no futuro) — isso é uma feature completa e testada. **Telemetria do próprio Nexus (`packages/telemetry`)**: nunca saiu do scaffold vazio criado na Phase 0. Nenhuma fase criou uma necessidade concreta de instrumentar o runtime do `apps/api`/`apps/web` com OpenTelemetry real, e instalar `@opentelemetry/*` sem um caso de uso (dashboards, alerting, tracing distribuído de verdade) violaria a regra de não instalar dependência sem justificar. Ver `docs/decisions/0018-final-qa-doc-drift-cleanup.md`.
 
 ## Demo Mode
 
