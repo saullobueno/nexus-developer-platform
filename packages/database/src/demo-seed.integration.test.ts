@@ -2,9 +2,9 @@ import { PGlite } from "@electric-sql/pglite";
 import { drizzle } from "drizzle-orm/pglite";
 import { migrate } from "drizzle-orm/pglite/migrator";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { SERVICES, TEAMS } from "./demo/data";
-import { seedDemoData } from "./demo-seed";
-import * as schema from "./schema";
+import { SERVICES, TEAMS } from "./demo/data.js";
+import { seedDemoData } from "./demo-seed.js";
+import * as schema from "./schema/index.js";
 
 describe("seedDemoData (integração via pglite)", () => {
   const client = new PGlite();

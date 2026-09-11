@@ -1,11 +1,11 @@
-import { createSeededRandom, hashString } from "./lib/seeded-random";
+import { createSeededRandom, hashString } from "./lib/seeded-random.js";
 import type {
   ExternalDeployment,
   ExternalError,
   ExternalMetric,
   ExternalRepository,
   IntegrationProvider,
-} from "./types";
+} from "./types.js";
 
 const MOCK_REPOSITORIES: ExternalRepository[] = [
   {

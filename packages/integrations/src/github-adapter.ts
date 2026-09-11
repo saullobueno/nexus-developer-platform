@@ -4,7 +4,7 @@ import type {
   ExternalMetric,
   ExternalRepository,
   IntegrationProvider,
-} from "./types";
+} from "./types.js";
 
 export interface GitHubAdapterConfig {
   token: string;

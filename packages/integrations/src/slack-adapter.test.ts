@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { SlackAdapter } from "./slack-adapter";
+import { SlackAdapter } from "./slack-adapter.js";
 
 describe("SlackAdapter", () => {
   afterEach(() => {

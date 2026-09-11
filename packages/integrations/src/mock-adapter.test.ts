@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { MockAdapter } from "./mock-adapter";
+import { MockAdapter } from "./mock-adapter.js";
 
 describe("MockAdapter", () => {
   const adapter = new MockAdapter();

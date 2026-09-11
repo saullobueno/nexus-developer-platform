@@ -1,8 +1,8 @@
 import { ForbiddenException, type ExecutionContext } from "@nestjs/common";
 import type { Reflector } from "@nestjs/core";
 import { describe, expect, it, vi } from "vitest";
-import type { AuthenticatedUser, PermissionsChecker } from "../types";
-import { PermissionsGuard } from "./permissions.guard";
+import type { AuthenticatedUser, PermissionsChecker } from "../types.js";
+import { PermissionsGuard } from "./permissions.guard.js";
 
 function createContext(user?: AuthenticatedUser): ExecutionContext {
   return {

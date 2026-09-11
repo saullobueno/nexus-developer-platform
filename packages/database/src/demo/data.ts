@@ -1,4 +1,4 @@
-import type { BaselineRoleSlug } from "../seed";
+import type { BaselineRoleSlug } from "../seed.js";
 
 export const DEMO_ORGANIZATION_NAME = "Acme Engineering";
 export const DEMO_PASSWORD = "demo1234";

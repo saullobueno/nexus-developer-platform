@@ -1,8 +1,8 @@
 import { relations } from "drizzle-orm";
 import { boolean, index, jsonb, pgTable, text, uniqueIndex, uuid } from "drizzle-orm/pg-core";
-import { createdAtOnly, idColumn } from "./_helpers";
-import { integrationProviderEnum } from "./enums";
-import { organizations } from "./organizations";
+import { createdAtOnly, idColumn } from "./_helpers.js";
+import { integrationProviderEnum } from "./enums.js";
+import { organizations } from "./organizations.js";
 
 export const integrations = pgTable(
   "integrations",

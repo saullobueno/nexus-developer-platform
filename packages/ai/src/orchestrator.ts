@@ -1,7 +1,7 @@
-import { runDemoOrchestrator } from "./demo-orchestrator";
-import { selectModel } from "./model-selection";
-import { runRealOrchestrator } from "./real-orchestrator";
-import type { CopilotResponse, ToolExecutor } from "./types";
+import { runDemoOrchestrator } from "./demo-orchestrator.js";
+import { selectModel } from "./model-selection.js";
+import { runRealOrchestrator } from "./real-orchestrator.js";
+import type { CopilotResponse, ToolExecutor } from "./types.js";
 
 export interface RunCopilotQueryInput {
   question: string;

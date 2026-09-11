@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { GrafanaAdapter } from "./grafana-adapter";
+import { GrafanaAdapter } from "./grafana-adapter.js";
 
 function jsonResponse(body: unknown, ok = true, status = 200) {
   return { ok, status, json: async () => body } as Response;

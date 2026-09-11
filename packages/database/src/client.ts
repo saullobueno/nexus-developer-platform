@@ -2,8 +2,8 @@ import { drizzle } from "drizzle-orm/postgres-js";
 import type { PgliteDatabase } from "drizzle-orm/pglite";
 import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
-import { parseEnv } from "./env";
-import * as schema from "./schema";
+import { parseEnv } from "./env.js";
+import * as schema from "./schema/index.js";
 
 export function createDatabaseClient(source?: Record<string, string | undefined>) {
   const env = parseEnv(source);

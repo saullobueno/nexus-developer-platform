@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
-import { runCopilotQuery } from "./orchestrator";
-import { runRealOrchestrator } from "./real-orchestrator";
+import { runCopilotQuery } from "./orchestrator.js";
+import { runRealOrchestrator } from "./real-orchestrator.js";
 
 vi.mock("./real-orchestrator", () => ({
   runRealOrchestrator: vi.fn().mockResolvedValue({

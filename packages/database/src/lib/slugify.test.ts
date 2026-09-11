@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { slugify } from "./slugify";
+import { slugify } from "./slugify.js";
 
 describe("slugify", () => {
   it("converte para minúsculas e troca espaços por hífen", () => {

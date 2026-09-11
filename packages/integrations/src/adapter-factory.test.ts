@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { resolveAdapter } from "./adapter-factory";
-import { GitHubAdapter } from "./github-adapter";
-import { GrafanaAdapter } from "./grafana-adapter";
-import { MockAdapter } from "./mock-adapter";
-import { SentryAdapter } from "./sentry-adapter";
+import { resolveAdapter } from "./adapter-factory.js";
+import { GitHubAdapter } from "./github-adapter.js";
+import { GrafanaAdapter } from "./grafana-adapter.js";
+import { MockAdapter } from "./mock-adapter.js";
+import { SentryAdapter } from "./sentry-adapter.js";
 
 describe("resolveAdapter", () => {
   it("retorna MockAdapter sempre que demoMode é true, mesmo com config válido", () => {

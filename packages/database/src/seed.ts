@@ -1,8 +1,8 @@
 import bcrypt from "bcryptjs";
 import { eq } from "drizzle-orm";
-import type { DatabaseClient } from "./client";
-import { slugify } from "./lib/slugify";
-import { organizations, permissions, rolePermissions, roles, userRoles, users } from "./schema";
+import type { DatabaseClient } from "./client.js";
+import { slugify } from "./lib/slugify.js";
+import { organizations, permissions, rolePermissions, roles, userRoles, users } from "./schema/index.js";
 
 export const BASELINE_PERMISSIONS = [
   "services:read",

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { parseEnv } from "./env";
+import { parseEnv } from "./env.js";
 
 describe("parseEnv", () => {
   it("aceita uma DATABASE_URL válida", () => {

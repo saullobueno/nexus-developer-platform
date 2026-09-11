@@ -16,6 +16,11 @@ const loginFormSchema = z.object({
 
 type LoginFormValues = z.infer<typeof loginFormSchema>;
 
+const DEMO_LOGIN_VALUES: LoginFormValues = {
+  email: "admin@acme.test",
+  password: "demo1234",
+};
+
 export default function LoginPage() {
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -24,7 +29,10 @@ export default function LoginPage() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFormValues>({ resolver: zodResolver(loginFormSchema) });
+  } = useForm<LoginFormValues>({
+    resolver: zodResolver(loginFormSchema),
+    defaultValues: DEMO_LOGIN_VALUES,
+  });
 
   const loginMutation = useMutation({
     mutationFn: (values: LoginFormValues) => login(values.email, values.password),

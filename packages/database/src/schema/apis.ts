@@ -1,10 +1,10 @@
 import { relations } from "drizzle-orm";
 import { index, jsonb, pgTable, text, uniqueIndex, uuid, varchar } from "drizzle-orm/pg-core";
-import { createdAtOnly, idColumn } from "./_helpers";
-import { services } from "./catalog";
-import { apiProtocolEnum, apiStatusEnum } from "./enums";
-import { teams } from "./identity";
-import { organizations } from "./organizations";
+import { createdAtOnly, idColumn } from "./_helpers.js";
+import { services } from "./catalog.js";
+import { apiProtocolEnum, apiStatusEnum } from "./enums.js";
+import { teams } from "./identity.js";
+import { organizations } from "./organizations.js";
 
 export const apis = pgTable(
   "apis",

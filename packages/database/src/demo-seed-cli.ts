@@ -1,6 +1,6 @@
-import { createDatabaseClient } from "./client";
-import { DEMO_PASSWORD } from "./demo/data";
-import { seedDemoData } from "./demo-seed";
+import { createDatabaseClient } from "./client.js";
+import { DEMO_PASSWORD } from "./demo/data.js";
+import { seedDemoData } from "./demo-seed.js";
 
 async function main() {
   const db = createDatabaseClient();

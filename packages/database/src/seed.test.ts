@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { BASELINE_PERMISSIONS, BASELINE_ROLES, ROLE_PERMISSION_MAP } from "./seed";
+import { BASELINE_PERMISSIONS, BASELINE_ROLES, ROLE_PERMISSION_MAP } from "./seed.js";
 
 describe("ROLE_PERMISSION_MAP", () => {
   it("tem uma entrada para cada role baseline", () => {

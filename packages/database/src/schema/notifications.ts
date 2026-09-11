@@ -1,9 +1,9 @@
 import { relations } from "drizzle-orm";
 import { boolean, index, jsonb, pgTable, text, uuid, varchar } from "drizzle-orm/pg-core";
-import { createdAtOnly, idColumn } from "./_helpers";
-import { notificationChannelEnum } from "./enums";
-import { users } from "./identity";
-import { organizations } from "./organizations";
+import { createdAtOnly, idColumn } from "./_helpers.js";
+import { notificationChannelEnum } from "./enums.js";
+import { users } from "./identity.js";
+import { organizations } from "./organizations.js";
 
 export const notifications = pgTable(
   "notifications",

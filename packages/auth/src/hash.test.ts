@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { hashPassword, verifyPassword } from "./hash";
+import { hashPassword, verifyPassword } from "./hash.js";
 
 describe("hashPassword / verifyPassword", () => {
   it("gera um hash diferente da senha original", async () => {

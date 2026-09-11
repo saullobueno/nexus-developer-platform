@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { selectModel } from "./model-selection";
+import { selectModel } from "./model-selection.js";
 
 describe("selectModel", () => {
   it("retorna null quando nenhuma credencial está presente", () => {

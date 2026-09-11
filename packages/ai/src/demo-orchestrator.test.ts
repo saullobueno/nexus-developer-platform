@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { runDemoOrchestrator } from "./demo-orchestrator";
+import { runDemoOrchestrator } from "./demo-orchestrator.js";
 
 const KNOWN_SLUGS = ["payments-api", "checkout-web", "identity-api"];
 

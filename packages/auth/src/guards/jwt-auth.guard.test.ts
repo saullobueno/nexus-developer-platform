@@ -2,9 +2,9 @@ import { UnauthorizedException, type ExecutionContext } from "@nestjs/common";
 import type { JwtService } from "@nestjs/jwt";
 import type { Request } from "express";
 import { describe, expect, it, vi } from "vitest";
-import { AUTH_COOKIE_NAME } from "../constants";
-import type { AuthenticatedUser } from "../types";
-import { JwtAuthGuard } from "./jwt-auth.guard";
+import { AUTH_COOKIE_NAME } from "../constants.js";
+import type { AuthenticatedUser } from "../types.js";
+import { JwtAuthGuard } from "./jwt-auth.guard.js";
 
 function createContext(request: Partial<Request>): ExecutionContext {
   return { switchToHttp: () => ({ getRequest: () => request }) } as unknown as ExecutionContext;

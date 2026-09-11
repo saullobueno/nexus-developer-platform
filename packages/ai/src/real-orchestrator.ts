@@ -1,9 +1,9 @@
 import { anthropic } from "@ai-sdk/anthropic";
 import { openai } from "@ai-sdk/openai";
 import { generateText, stepCountIs, tool } from "ai";
-import type { ModelSelection } from "./model-selection";
-import { MUTATING_TOOL_DEFINITIONS, READ_TOOL_DEFINITIONS } from "./tool-definitions";
-import type { CopilotResponse, Evidence, Finding, SuggestedAction, ToolExecutor } from "./types";
+import type { ModelSelection } from "./model-selection.js";
+import { MUTATING_TOOL_DEFINITIONS, READ_TOOL_DEFINITIONS } from "./tool-definitions.js";
+import type { CopilotResponse, Evidence, Finding, SuggestedAction, ToolExecutor } from "./types.js";
 
 export interface RealOrchestratorInput {
   question: string;

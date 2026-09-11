@@ -6,8 +6,8 @@ import {
   type ExecutionContext,
 } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
-import { PERMISSIONS_CHECKER, PERMISSIONS_KEY } from "../constants";
-import type { AuthenticatedUser, PermissionsChecker } from "../types";
+import { PERMISSIONS_CHECKER, PERMISSIONS_KEY } from "../constants.js";
+import type { AuthenticatedUser, PermissionsChecker } from "../types.js";
 
 @Injectable()
 export class PermissionsGuard implements CanActivate {

@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import { eq } from "drizzle-orm";
-import type { DatabaseClient } from "./client";
+import type { DatabaseClient } from "./client.js";
 import {
   DEMO_ORGANIZATION_NAME,
   DEMO_PASSWORD,
@@ -14,9 +14,9 @@ import {
   SERVICES,
   TEAM_DESCRIPTIONS,
   TEAMS,
-} from "./demo/data";
-import { hoursAgo, pick, randomFloat, randomHex, randomInt } from "./demo/random";
-import { seedBaseline } from "./seed";
+} from "./demo/data.js";
+import { hoursAgo, pick, randomFloat, randomHex, randomInt } from "./demo/random.js";
+import { seedBaseline } from "./seed.js";
 import {
   adrs,
   apiConsumers,
@@ -48,7 +48,7 @@ import {
   traces,
   userRoles,
   users,
-} from "./schema";
+} from "./schema/index.js";
 
 const PIPELINE_STAGE_NAMES = ["Build", "Unit Tests", "Integration Tests", "Security", "Deploy"];
 const DEPLOYMENTS_PER_SERVICE = 6;

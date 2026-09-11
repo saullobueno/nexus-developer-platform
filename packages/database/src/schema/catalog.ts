@@ -11,10 +11,10 @@ import {
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
-import { idColumn, timestamps } from "./_helpers";
-import { environmentTypeEnum, healthStatusEnum, lifecycleEnum, serviceTypeEnum } from "./enums";
-import { teams, users } from "./identity";
-import { organizations } from "./organizations";
+import { idColumn, timestamps } from "./_helpers.js";
+import { environmentTypeEnum, healthStatusEnum, lifecycleEnum, serviceTypeEnum } from "./enums.js";
+import { teams, users } from "./identity.js";
+import { organizations } from "./organizations.js";
 
 export const environments = pgTable(
   "environments",

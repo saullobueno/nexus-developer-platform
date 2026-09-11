@@ -1,10 +1,10 @@
 import { relations } from "drizzle-orm";
 import { index, integer, pgTable, text, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
-import { createdAtOnly, idColumn } from "./_helpers";
-import { services } from "./catalog";
-import { deployments } from "./deployments";
-import { deploymentStatusEnum, pipelineStageStatusEnum } from "./enums";
-import { users } from "./identity";
+import { createdAtOnly, idColumn } from "./_helpers.js";
+import { services } from "./catalog.js";
+import { deployments } from "./deployments.js";
+import { deploymentStatusEnum, pipelineStageStatusEnum } from "./enums.js";
+import { users } from "./identity.js";
 
 export const pipelines = pgTable(
   "pipelines",

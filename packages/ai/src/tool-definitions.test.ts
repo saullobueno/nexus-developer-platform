@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { ALL_TOOL_DEFINITIONS, MUTATING_TOOL_DEFINITIONS, READ_TOOL_DEFINITIONS } from "./tool-definitions";
+import { ALL_TOOL_DEFINITIONS, MUTATING_TOOL_DEFINITIONS, READ_TOOL_DEFINITIONS } from "./tool-definitions.js";
 
 describe("tool-definitions", () => {
   it("tem 12 ferramentas somente-leitura e 4 mutáveis (spec seção 19)", () => {

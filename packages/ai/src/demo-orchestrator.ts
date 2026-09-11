@@ -1,4 +1,4 @@
-import type { CopilotResponse, Evidence, Finding, SuggestedAction, ToolExecutor } from "./types";
+import type { CopilotResponse, Evidence, Finding, SuggestedAction, ToolExecutor } from "./types.js";
 
 export interface DemoOrchestratorInput {
   question: string;

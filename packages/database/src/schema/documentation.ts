@@ -1,10 +1,10 @@
 import { relations } from "drizzle-orm";
 import { index, integer, pgTable, text, timestamp, uniqueIndex, uuid, varchar } from "drizzle-orm/pg-core";
-import { idColumn, timestamps } from "./_helpers";
-import { services } from "./catalog";
-import { adrStatusEnum, documentCategoryEnum } from "./enums";
-import { users } from "./identity";
-import { organizations } from "./organizations";
+import { idColumn, timestamps } from "./_helpers.js";
+import { services } from "./catalog.js";
+import { adrStatusEnum, documentCategoryEnum } from "./enums.js";
+import { users } from "./identity.js";
+import { organizations } from "./organizations.js";
 
 export const documents = pgTable(
   "documents",

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { PERMISSIONS_KEY } from "../constants";
-import { RequirePermissions } from "./require-permissions.decorator";
+import { PERMISSIONS_KEY } from "../constants.js";
+import { RequirePermissions } from "./require-permissions.decorator.js";
 
 class Dummy {
   @RequirePermissions("services:read", "services:update")

@@ -1,5 +1,5 @@
-import { createDatabaseClient } from "./client";
-import { seedBaseline, seedUserWithRole } from "./seed";
+import { createDatabaseClient } from "./client.js";
+import { seedBaseline, seedUserWithRole } from "./seed.js";
 
 const DEMO_ADMIN_EMAIL = "admin@acme.test";
 const DEMO_ADMIN_PASSWORD = "demo1234";

@@ -9,8 +9,8 @@ import {
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
-import { idColumn, timestamps } from "./_helpers";
-import { organizations } from "./organizations";
+import { idColumn, timestamps } from "./_helpers.js";
+import { organizations } from "./organizations.js";
 
 export const users = pgTable(
   "users",

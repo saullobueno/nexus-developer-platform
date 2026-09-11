@@ -10,9 +10,9 @@ import {
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
-import { idColumn } from "./_helpers";
-import { environments, services } from "./catalog";
-import { logLevelEnum } from "./enums";
+import { idColumn } from "./_helpers.js";
+import { environments, services } from "./catalog.js";
+import { logLevelEnum } from "./enums.js";
 
 export const metrics = pgTable(
   "metrics",

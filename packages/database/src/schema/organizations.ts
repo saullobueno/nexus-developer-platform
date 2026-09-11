@@ -1,5 +1,5 @@
 import { pgTable, text, varchar } from "drizzle-orm/pg-core";
-import { idColumn, timestamps } from "./_helpers";
+import { idColumn, timestamps } from "./_helpers.js";
 
 export const organizations = pgTable("organizations", {
   id: idColumn(),

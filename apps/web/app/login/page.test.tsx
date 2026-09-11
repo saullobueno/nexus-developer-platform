@@ -24,6 +24,8 @@ describe("LoginPage", () => {
     const user = userEvent.setup();
     renderWithQueryClient(<LoginPage />);
 
+    await user.clear(screen.getByLabelText("E-mail"));
+    await user.clear(screen.getByLabelText("Senha"));
     await user.click(screen.getByRole("button", { name: "Entrar" }));
 
     expect(await screen.findByText("Informe um e-mail válido")).toBeInTheDocument();
@@ -38,8 +40,6 @@ describe("LoginPage", () => {
     const user = userEvent.setup();
     renderWithQueryClient(<LoginPage />);
 
-    await user.type(screen.getByLabelText("E-mail"), "admin@acme.test");
-    await user.type(screen.getByLabelText("Senha"), "demo1234");
     await user.click(screen.getByRole("button", { name: "Entrar" }));
 
     expect(loginMock).toHaveBeenCalledWith("admin@acme.test", "demo1234");

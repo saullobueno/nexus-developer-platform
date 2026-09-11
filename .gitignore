@@ -29,6 +29,10 @@ blob-report/
 npm-debug.log*
 pnpm-debug.log*
 
+# local postgres runtime
+.local-postgres*/
+.local-postgres-pw
+
 # tooling local (Claude Code)
 .claude/
 

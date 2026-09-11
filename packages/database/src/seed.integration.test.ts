@@ -3,8 +3,8 @@ import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/pglite";
 import { migrate } from "drizzle-orm/pglite/migrator";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import * as schema from "./schema";
-import { seedBaseline, seedUserWithRole } from "./seed";
+import * as schema from "./schema/index.js";
+import { seedBaseline, seedUserWithRole } from "./seed.js";
 
 describe("seedUserWithRole (integração via pglite)", () => {
   const client = new PGlite();

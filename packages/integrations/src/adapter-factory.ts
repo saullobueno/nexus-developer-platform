@@ -1,8 +1,8 @@
-import { GitHubAdapter, type GitHubAdapterConfig } from "./github-adapter";
-import { GrafanaAdapter, type GrafanaAdapterConfig } from "./grafana-adapter";
-import { MockAdapter } from "./mock-adapter";
-import { SentryAdapter, type SentryAdapterConfig } from "./sentry-adapter";
-import type { IntegrationProvider } from "./types";
+import { GitHubAdapter, type GitHubAdapterConfig } from "./github-adapter.js";
+import { GrafanaAdapter, type GrafanaAdapterConfig } from "./grafana-adapter.js";
+import { MockAdapter } from "./mock-adapter.js";
+import { SentryAdapter, type SentryAdapterConfig } from "./sentry-adapter.js";
+import type { IntegrationProvider } from "./types.js";
 
 export type SupportedProvider = "github" | "sentry" | "grafana" | "slack" | "prometheus" | "mock";
 

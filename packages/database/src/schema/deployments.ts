@@ -1,9 +1,9 @@
 import { relations } from "drizzle-orm";
 import { index, integer, pgTable, text, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
-import { idColumn, createdAtOnly } from "./_helpers";
-import { environments, services } from "./catalog";
-import { deploymentStatusEnum, logLevelEnum } from "./enums";
-import { users } from "./identity";
+import { idColumn, createdAtOnly } from "./_helpers.js";
+import { environments, services } from "./catalog.js";
+import { deploymentStatusEnum, logLevelEnum } from "./enums.js";
+import { users } from "./identity.js";
 
 export const deployments = pgTable(
   "deployments",

@@ -1,8 +1,8 @@
 import { relations } from "drizzle-orm";
 import { boolean, index, integer, jsonb, pgTable, uniqueIndex, uuid, varchar } from "drizzle-orm/pg-core";
-import { idColumn, timestamps } from "./_helpers";
-import { featureFlagTypeEnum } from "./enums";
-import { organizations } from "./organizations";
+import { idColumn, timestamps } from "./_helpers.js";
+import { featureFlagTypeEnum } from "./enums.js";
+import { organizations } from "./organizations.js";
 
 export const featureFlags = pgTable(
   "feature_flags",

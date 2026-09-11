@@ -12,10 +12,10 @@ import {
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
-import { idColumn } from "./_helpers";
-import { aiMessageRoleEnum, aiRunStatusEnum } from "./enums";
-import { users } from "./identity";
-import { organizations } from "./organizations";
+import { idColumn } from "./_helpers.js";
+import { aiMessageRoleEnum, aiRunStatusEnum } from "./enums.js";
+import { users } from "./identity.js";
+import { organizations } from "./organizations.js";
 
 export const aiAgentRuns = pgTable(
   "ai_agent_runs",
