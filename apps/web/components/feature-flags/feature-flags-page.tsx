@@ -2,6 +2,7 @@
 
 import { Button, Input } from "@nexus/ui";
 import { useState } from "react";
+import { useDebouncedValue } from "../../hooks/use-debounced-value";
 import { useFeatureFlags } from "../../hooks/use-feature-flags";
 import { FeatureFlagsDataTable } from "./feature-flags-data-table";
 
@@ -12,9 +13,10 @@ export function FeatureFlagsPage() {
   const [search, setSearch] = useState("");
   const [type, setType] = useState("");
   const [page, setPage] = useState(1);
+  const debouncedSearch = useDebouncedValue(search, 300);
 
   const { data, isLoading, isError, refetch } = useFeatureFlags({
-    search: search || undefined,
+    search: debouncedSearch || undefined,
     type: type || undefined,
     page,
     pageSize: PAGE_SIZE,

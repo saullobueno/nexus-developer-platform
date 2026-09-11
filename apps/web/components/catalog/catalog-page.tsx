@@ -2,6 +2,7 @@
 
 import { Button, Input } from "@nexus/ui";
 import { useState } from "react";
+import { useDebouncedValue } from "../../hooks/use-debounced-value";
 import { useServices } from "../../hooks/use-services";
 import { ServicesDataTable } from "./services-data-table";
 
@@ -25,9 +26,10 @@ export function CatalogPage() {
   const [lifecycle, setLifecycle] = useState("");
   const [health, setHealth] = useState("");
   const [page, setPage] = useState(1);
+  const debouncedSearch = useDebouncedValue(search, 300);
 
   const { data, isLoading, isError, refetch } = useServices({
-    search: search || undefined,
+    search: debouncedSearch || undefined,
     type: type || undefined,
     lifecycle: lifecycle || undefined,
     health: health || undefined,

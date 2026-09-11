@@ -2,6 +2,7 @@
 
 import { Button, Input } from "@nexus/ui";
 import { useState } from "react";
+import { useDebouncedValue } from "../../hooks/use-debounced-value";
 import { useObservabilityLogs } from "../../hooks/use-observability-logs";
 import { parseLogQuery } from "../../lib/log-query";
 import { ObservabilityNav } from "./observability-nav";
@@ -19,7 +20,8 @@ const LEVEL_COLOR: Record<string, string> = {
 export function LogsPage() {
   const [queryText, setQueryText] = useState("");
   const [page, setPage] = useState(1);
-  const filters = parseLogQuery(queryText);
+  const debouncedQueryText = useDebouncedValue(queryText, 300);
+  const filters = parseLogQuery(debouncedQueryText);
 
   const { data, isLoading, isError, refetch } = useObservabilityLogs({
     ...filters,

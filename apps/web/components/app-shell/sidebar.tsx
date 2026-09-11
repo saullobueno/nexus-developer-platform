@@ -15,7 +15,7 @@ export function Sidebar({ collapsed }: { collapsed: boolean }) {
         collapsed ? "w-16" : "w-60",
       )}
     >
-      <nav className="flex flex-col gap-1 p-2">
+      <nav aria-label="Navegação principal" className="flex flex-col gap-1 p-2">
         {NAV_ITEMS.map((item) => {
           const isActive = pathname === item.href;
           const Icon = item.icon;
@@ -23,7 +23,9 @@ export function Sidebar({ collapsed }: { collapsed: boolean }) {
             <Link
               key={item.href}
               href={item.href}
-              title={item.label}
+              aria-label={item.label}
+              aria-current={isActive ? "page" : undefined}
+              title={collapsed ? item.label : undefined}
               className={cn(
                 "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
                 isActive
@@ -31,7 +33,7 @@ export function Sidebar({ collapsed }: { collapsed: boolean }) {
                   : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
               )}
             >
-              <Icon className="size-4 shrink-0" />
+              <Icon className="size-4 shrink-0" aria-hidden="true" />
               {!collapsed && <span>{item.label}</span>}
             </Link>
           );

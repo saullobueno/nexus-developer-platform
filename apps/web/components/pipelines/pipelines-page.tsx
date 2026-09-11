@@ -2,6 +2,7 @@
 
 import { Button, Input } from "@nexus/ui";
 import { useState } from "react";
+import { useDebouncedValue } from "../../hooks/use-debounced-value";
 import { usePipelines } from "../../hooks/use-pipelines";
 import { PipelinesDataTable } from "./pipelines-data-table";
 
@@ -10,9 +11,10 @@ const PAGE_SIZE = 20;
 export function PipelinesPage() {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
+  const debouncedSearch = useDebouncedValue(search, 300);
 
   const { data, isLoading, isError, refetch } = usePipelines({
-    search: search || undefined,
+    search: debouncedSearch || undefined,
     page,
     pageSize: PAGE_SIZE,
   });

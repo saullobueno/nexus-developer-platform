@@ -3,12 +3,14 @@
 import { Button, Input } from "@nexus/ui";
 import Link from "next/link";
 import { useState } from "react";
+import { useDebouncedValue } from "../../hooks/use-debounced-value";
 import { useTeams } from "../../hooks/use-teams";
 
 export function TeamsPage() {
   const [search, setSearch] = useState("");
+  const debouncedSearch = useDebouncedValue(search, 300);
 
-  const { data, isLoading, isError, refetch } = useTeams({ search: search || undefined, pageSize: 50 });
+  const { data, isLoading, isError, refetch } = useTeams({ search: debouncedSearch || undefined, pageSize: 50 });
 
   return (
     <div className="space-y-6 p-6">

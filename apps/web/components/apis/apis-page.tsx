@@ -3,6 +3,7 @@
 import { Button, Input } from "@nexus/ui";
 import { useState } from "react";
 import { useApis } from "../../hooks/use-apis";
+import { useDebouncedValue } from "../../hooks/use-debounced-value";
 import { ApisDataTable } from "./apis-data-table";
 
 const PROTOCOL_OPTIONS = ["rest", "graphql", "grpc", "websocket"];
@@ -14,9 +15,10 @@ export function ApisPage() {
   const [protocol, setProtocol] = useState("");
   const [status, setStatus] = useState("");
   const [page, setPage] = useState(1);
+  const debouncedSearch = useDebouncedValue(search, 300);
 
   const { data, isLoading, isError, refetch } = useApis({
-    search: search || undefined,
+    search: debouncedSearch || undefined,
     protocol: protocol || undefined,
     status: status || undefined,
     page,

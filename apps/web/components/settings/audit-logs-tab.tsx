@@ -3,15 +3,17 @@
 import { Button, Input } from "@nexus/ui";
 import { useState } from "react";
 import { useAuditLogs } from "../../hooks/use-audit-logs";
+import { useDebouncedValue } from "../../hooks/use-debounced-value";
 
 const PAGE_SIZE = 20;
 
 export function AuditLogsTab() {
   const [resource, setResource] = useState("");
   const [page, setPage] = useState(1);
+  const debouncedResource = useDebouncedValue(resource, 300);
 
   const { data, isLoading, isError, refetch } = useAuditLogs({
-    resource: resource || undefined,
+    resource: debouncedResource || undefined,
     page,
     pageSize: PAGE_SIZE,
   });

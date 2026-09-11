@@ -3,6 +3,7 @@
 import { Button, Input } from "@nexus/ui";
 import Link from "next/link";
 import { useState } from "react";
+import { useDebouncedValue } from "../../hooks/use-debounced-value";
 import { useDocuments } from "../../hooks/use-documents";
 import { DocsNav } from "./docs-nav";
 
@@ -20,9 +21,10 @@ export function DocsPage() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
   const [page, setPage] = useState(1);
+  const debouncedSearch = useDebouncedValue(search, 300);
 
   const { data, isLoading, isError, refetch } = useDocuments({
-    search: search || undefined,
+    search: debouncedSearch || undefined,
     category: category || undefined,
     page,
     pageSize: PAGE_SIZE,
