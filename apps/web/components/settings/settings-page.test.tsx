@@ -1,17 +1,35 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import type { ReactElement } from "react";
 import { describe, expect, it, vi } from "vitest";
 import { SettingsPage } from "./settings-page";
 
-const useIntegrationsMock = vi.fn();
-vi.mock("../../hooks/use-integrations", () => ({
-  useIntegrations: (...args: unknown[]) => useIntegrationsMock(...args),
+vi.mock("../../hooks/use-organization", () => ({
+  useOrganization: () => ({ isLoading: true, isError: false, data: undefined }),
 }));
-
-vi.mock("../../lib/integrations", () => ({
-  upsertIntegration: vi.fn(),
-  testIntegration: vi.fn(),
+vi.mock("../../hooks/use-members", () => ({
+  useMembers: () => ({
+    isLoading: false,
+    isError: false,
+    data: [{ id: "u1", name: "Bruno Alves", email: "bruno.alves@acme.test", roles: [{ id: "r1", name: "Developer", slug: "developer" }] }],
+  }),
+}));
+vi.mock("../../hooks/use-roles", () => ({
+  useRoles: () => ({ isLoading: true, isError: false, data: undefined }),
+}));
+vi.mock("../../hooks/use-environments", () => ({
+  useEnvironments: () => ({ isLoading: true, isError: false, data: undefined }),
+}));
+vi.mock("../../hooks/use-integrations", () => ({
+  useIntegrations: () => ({ isLoading: true, isError: false, data: undefined }),
+}));
+vi.mock("../../hooks/use-audit-logs", () => ({
+  useAuditLogs: () => ({ isLoading: true, isError: false, data: undefined }),
+}));
+vi.mock("../../lib/settings", () => ({
+  updateOrganization: vi.fn(),
+  updateMemberRole: vi.fn(),
 }));
 
 function renderWithQueryClient(ui: ReactElement) {
@@ -20,26 +38,16 @@ function renderWithQueryClient(ui: ReactElement) {
 }
 
 describe("SettingsPage", () => {
-  it("mostra o estado de loading", () => {
-    useIntegrationsMock.mockReturnValue({ isLoading: true, isError: false, data: undefined });
+  it("mostra a tab Organization por padrão", () => {
     renderWithQueryClient(<SettingsPage />);
-    expect(screen.getByRole("status")).toHaveTextContent("Carregando integrations...");
+    expect(screen.getByRole("status")).toHaveTextContent("Carregando organização...");
   });
 
-  it("lista as integrations com status configurado/não configurado", () => {
-    useIntegrationsMock.mockReturnValue({
-      isLoading: false,
-      isError: false,
-      data: [
-        { provider: "github", configured: true, enabled: true, config: { owner: "acme" } },
-        { provider: "slack", configured: false, enabled: false, config: {} },
-      ],
-    });
+  it("troca para a tab Members ao clicar", async () => {
+    const user = userEvent.setup();
     renderWithQueryClient(<SettingsPage />);
 
-    expect(screen.getByRole("heading", { name: "GitHub" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Slack" })).toBeInTheDocument();
-    expect(screen.getByText("Configurado")).toBeInTheDocument();
-    expect(screen.getByText("Não configurado")).toBeInTheDocument();
+    await user.click(screen.getByRole("tab", { name: "Members" }));
+    expect(screen.getByText("Bruno Alves")).toBeInTheDocument();
   });
 });

@@ -1,45 +1,50 @@
 "use client";
 
-import { Button } from "@nexus/ui";
-import { useIntegrations } from "../../hooks/use-integrations";
-import { IntegrationCard } from "./integration-card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@nexus/ui";
+import { AuditLogsTab } from "./audit-logs-tab";
+import { EnvironmentsTab } from "./environments-tab";
+import { IntegrationsTab } from "./integrations-tab";
+import { MembersTab } from "./members-tab";
+import { OrganizationTab } from "./organization-tab";
+import { RolesTab } from "./roles-tab";
 
 export function SettingsPage() {
-  const { data, isLoading, isError, refetch } = useIntegrations();
-
   return (
     <div className="space-y-6 p-6">
       <div>
         <h1 className="text-2xl font-semibold tracking-tight">Settings</h1>
-        <p className="text-sm text-muted-foreground">Integrations</p>
+        <p className="text-sm text-muted-foreground">Organization, Members, Roles, Environments, Integrations e Audit Logs</p>
       </div>
 
-      <section className="space-y-3">
-        <h2 className="text-sm font-semibold">Integrations</h2>
-        <p className="text-xs text-muted-foreground">
-          GitHub, Sentry, Grafana, Slack e Prometheus. Sem config válido ou com DEMO_MODE ligado, o teste de
-          conexão usa dados de demonstração.
-        </p>
+      <Tabs defaultValue="organization">
+        <TabsList className="flex-wrap">
+          <TabsTrigger value="organization">Organization</TabsTrigger>
+          <TabsTrigger value="members">Members</TabsTrigger>
+          <TabsTrigger value="roles">Roles</TabsTrigger>
+          <TabsTrigger value="environments">Environments</TabsTrigger>
+          <TabsTrigger value="integrations">Integrations</TabsTrigger>
+          <TabsTrigger value="audit-logs">Audit Logs</TabsTrigger>
+        </TabsList>
 
-        {isLoading ? (
-          <p className="text-sm text-muted-foreground" role="status">
-            Carregando integrations...
-          </p>
-        ) : isError || !data ? (
-          <div className="flex flex-col items-start gap-3 text-sm">
-            <p className="text-destructive">Não foi possível carregar as integrations.</p>
-            <Button variant="outline" size="sm" onClick={() => refetch()}>
-              Tentar novamente
-            </Button>
-          </div>
-        ) : (
-          <div className="grid gap-4 sm:grid-cols-2">
-            {data.map((integration) => (
-              <IntegrationCard key={integration.provider} integration={integration} />
-            ))}
-          </div>
-        )}
-      </section>
+        <TabsContent value="organization">
+          <OrganizationTab />
+        </TabsContent>
+        <TabsContent value="members">
+          <MembersTab />
+        </TabsContent>
+        <TabsContent value="roles">
+          <RolesTab />
+        </TabsContent>
+        <TabsContent value="environments">
+          <EnvironmentsTab />
+        </TabsContent>
+        <TabsContent value="integrations">
+          <IntegrationsTab />
+        </TabsContent>
+        <TabsContent value="audit-logs">
+          <AuditLogsTab />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

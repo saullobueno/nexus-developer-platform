@@ -17,6 +17,7 @@ import { PipelinesModule } from "./pipelines/pipelines.module";
 import { RealtimeModule } from "./realtime/realtime.module";
 import { ReportsModule } from "./reports/reports.module";
 import { ServicesModule } from "./services/services.module";
+import { SettingsModule } from "./settings/settings.module";
 import { TeamsModule } from "./teams/teams.module";
 
 @Module({
@@ -39,6 +40,7 @@ import { TeamsModule } from "./teams/teams.module";
     ReportsModule,
     IntegrationsModule,
     AiCopilotModule,
+    SettingsModule,
   ],
   controllers: [AppController],
 })
