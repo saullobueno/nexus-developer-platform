@@ -71,7 +71,7 @@ Duas coisas diferentes — só a primeira existe: **Observability (produto)** mo
 
 ## Security
 
-Autenticação JWT (cookie httpOnly, `secure` em produção, `sameSite=lax`), RBAC por permissão (`resource:action`), autorização por objeto em toda query (nunca confia em `organizationId`/`userId`/`serviceId` do frontend), validação Zod em toda fronteira de API, rate limiting (`@nestjs/throttler`, global + restrito em `/auth/login`), security headers (`helmet`), segredos hasheados com bcrypt (senhas e webhooks), audit log completo com UI filtrável. Gaps documentados e não implementados (sem infraestrutura real por trás, não fabricados): 2FA, SSO/OAuth, criptografia em repouso para configs de integração, verificação de sessão no servidor durante SSR. Ver `docs/decisions/0016-security-hardening-rate-limiting-headers-webhooks.md`.
+Autenticação JWT (cookie httpOnly, `secure` em produção, `sameSite=none` cross-domain em produção / `lax` em dev), RBAC por permissão (`resource:action`), autorização por objeto em toda query (nunca confia em `organizationId`/`userId`/`serviceId` do frontend), validação Zod em toda fronteira de API, rate limiting (`@nestjs/throttler`, global + restrito em `/auth/login`), security headers (`helmet`), segredos hasheados com bcrypt (senhas e webhooks), audit log completo com UI filtrável. Gaps documentados e não implementados (sem infraestrutura real por trás, não fabricados): 2FA, SSO/OAuth, criptografia em repouso para configs de integração, verificação de sessão no servidor durante SSR. Ver `docs/decisions/0016-security-hardening-rate-limiting-headers-webhooks.md`.
 
 ## Rodando localmente
 
@@ -101,12 +101,18 @@ pnpm --filter @nexus/database db:seed:demo
 
 ## Deploy
 
-- **`apps/web`** (Next.js) na Vercel: em **Settings → General → Root Directory**, defina `apps/web` (senão a Vercel builda a partir da raiz do monorepo, não reconhece nenhum framework e falha com `No Output Directory named "public" found"`). O Framework Preset deve virar "Next.js" automaticamente depois disso — nenhum build command customizado é necessário.
-- **`apps/api`** (NestJS): expõe realtime via SSE (`GET /realtime/events`, conexão HTTP de longa duração), que não se encaixa bem no modelo de função serverless da Vercel. Hospede em um serviço de processo longo (Render, Fly.io, Railway, um VPS) com um Postgres gerenciado real.
-- **Conectar os dois**:
-  1. No host do `apps/api`: configure `DATABASE_URL`, `JWT_SECRET`, `DEMO_MODE`, `WEB_APP_URL` (URL do `apps/web` na Vercel, para o CORS); rode `pnpm --filter @nexus/database db:migrate` (e `db:seed:demo` para dados de demo) contra o Postgres real.
-  2. Na Vercel: configure `NEXT_PUBLIC_API_URL` = URL pública do `apps/api` e redeploye o `apps/web` (variáveis `NEXT_PUBLIC_*` são embutidas em build-time).
-- Os dois serviços ficam em domínios diferentes em produção, então o cookie de sessão usa `sameSite: "none"` (com `secure: true`) quando `NODE_ENV=production` — em dev continua `"lax"` (`localhost:3000`↔`localhost:3001` é cross-port mas same-site). Ver detalhamento completo (incluindo os dois erros reais encontrados no primeiro deploy) em `docs/decisions/0019-license-and-deploy-validation-strategy.md`.
+Stack de deploy em produção, rodando 100% em planos gratuitos:
+
+- **`apps/web`** (Next.js) → **Vercel**. Em **Settings → General → Root Directory**, defina `apps/web` (senão a Vercel builda a partir da raiz do monorepo, não reconhece nenhum framework e falha com `No Output Directory named "public" found"`). Nenhum build command customizado é necessário.
+- **`apps/api`** (NestJS) → **Render**. Expõe realtime via SSE (`GET /realtime/events`, conexão HTTP de longa duração), que não se encaixa no modelo de função serverless da Vercel — precisa de um serviço de processo longo. Root Directory `apps/api`; Build Command `cd ../.. && pnpm install --frozen-lockfile && pnpm turbo run build --filter=api && cd apps/api`; Start Command `node dist/main.js`.
+- **Postgres** → **Neon** (plano Free permanente, sem cartão de crédito).
+- **Conectar os três**:
+  1. No Render: configure `DATABASE_URL` (connection string do Neon), `JWT_SECRET`, `DEMO_MODE`, `WEB_APP_URL` (URL do `apps/web` na Vercel, para o CORS); rode `pnpm --filter @nexus/database db:migrate` e `db:seed:demo` uma vez, localmente, apontando `DATABASE_URL` para o Neon.
+  2. Na Vercel: configure `NEXT_PUBLIC_API_URL` = URL pública do Render e redeploye o `apps/web` (variáveis `NEXT_PUBLIC_*` são embutidas em build-time).
+- Vercel e Render ficam em domínios diferentes, então o cookie de sessão usa `sameSite: "none"` (com `secure: true`) quando `NODE_ENV=production` — em dev continua `"lax"` (`localhost:3000`↔`localhost:3001` é cross-port mas same-site).
+- Trade-off aceito do free tier do Render: o serviço "dorme" após 15 min sem tráfego, ~30-60s de cold start no primeiro request seguinte.
+
+Ver detalhamento completo (incluindo os erros reais encontrados no primeiro deploy e o racional de escolha de cada provedor) em `docs/decisions/0019-license-and-deploy-validation-strategy.md`.
 
 ## Estrutura
 
