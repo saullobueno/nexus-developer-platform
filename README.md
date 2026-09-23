@@ -1,12 +1,38 @@
 # Nexus Developer Platform
 
-Internal Developer Portal (IDP) production-grade: catálogo de serviços, deployments, incidentes, observability, feature flags, pipelines, times, relatórios, integrações, realtime e um AI Engineering Copilot com tool calling real e aprovação humana. Construído fase a fase (20 fases, ver `NEXUS-SPECIFICATION.md`) para demonstrar **React + TypeScript + Full-stack + Monorepo + Platform Engineering + Observability + Realtime + RBAC + Integrations + AI Agents + Testing + Security + Product Design**.
+## O que é o Nexus
 
-> **Status: todas as 20 fases do roadmap concluídas** (Foundation → Documentation/Final QA). A spec (`NEXUS-SPECIFICATION.md` seção 34) enumera 21 itens porque separa Settings e Audit; na implementação, as duas foram tratadas como uma única fase (Phase 16) por compartilharem a mesma tela (`/settings`) e o mesmo `SettingsService` — daí 20 fases em vez de 21. Cada fase foi implementada, testada (`pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm test:e2e`) e commitada isoladamente — ver histórico de commits e `docs/decisions/` (19 ADRs) para o racional de cada decisão não trivial.
+O Nexus é um **portal interno para times de engenharia** — um painel único onde desenvolvedores encontram tudo que precisam saber sobre os sistemas que a empresa mantém, sem precisar caçar informação espalhada em várias ferramentas diferentes.
+
+Na prática, ele responde perguntas do dia a dia de um time de tecnologia: quais serviços existem e quem é o dono de cada um? O que foi implantado em produção hoje, e deu certo? Existe algum incidente em aberto agora? Como está a saúde (erros, latência) de cada sistema? Uma funcionalidade nova pode ser ligada só para um grupo de clientes? Há um assistente de IA que também responde essas perguntas em linguagem natural, consultando os dados reais da plataforma — e qualquer ação que ele sugira que mude algo (como reverter um deploy) só acontece depois que uma pessoa aprova.
+
+Esse tipo de ferramenta é comum em empresas de tecnologia de médio/grande porte (é o que se chama de *Internal Developer Portal*, ou IDP) e normalmente é construído sob medida, porque cada empresa tem seu próprio conjunto de sistemas e processos. O Nexus é uma implementação completa e funcional desse conceito, construída como projeto de portfólio.
+
+**Repositório:** https://github.com/saullobueno/nexus-developer-platform
+**Demo hospedada:** https://nexus-developer-platform-rho.vercel.app/ — login já preenchido com uma conta de demonstração, é só clicar em "Entrar" (a API roda num plano gratuito que "dorme" após 15 min sem uso, então o primeiro acesso pode levar 30-60s).
 
 ## Screenshots
 
-Não incluídas neste README — gerar screenshots de verdade exigiria rodar o produto localmente com dados de demo e capturar telas manualmente (`pnpm dev` + `db:seed:demo`, ver "Rodando localmente" abaixo). Preferimos não incluir imagens placeholder/fabricadas.
+| | |
+|---|---|
+| ![Login](docs/screenshots/login.png) | ![Dashboard](docs/screenshots/dashboard.png) |
+| Login (credencial de demo já preenchida) | Dashboard |
+| ![Catalog](docs/screenshots/catalog.png) | ![Detalhe de serviço](docs/screenshots/service-detail.png) |
+| Catálogo de serviços | Detalhe de um serviço |
+| ![Deployments](docs/screenshots/deployments.png) | ![Incidents](docs/screenshots/incidents.png) |
+| Deployments | Incidents |
+| ![Observability](docs/screenshots/observability.png) | ![Feature Flags](docs/screenshots/feature-flags.png) |
+| Observability (logs) | Feature Flags |
+| ![Pipelines](docs/screenshots/pipelines.png) | ![AI Copilot](docs/screenshots/ai-copilot.png) |
+| Pipelines | AI Engineering Copilot |
+
+Dark mode é o tema padrão da plataforma (não depende de preferência do sistema operacional).
+
+> **Status: todas as 20 fases do roadmap concluídas** (Foundation → Documentation/Final QA). A spec (`NEXUS-SPECIFICATION.md` seção 34) enumera 21 itens porque separa Settings e Audit; na implementação, as duas foram tratadas como uma única fase (Phase 16) por compartilharem a mesma tela (`/settings`) e o mesmo `SettingsService` — daí 20 fases em vez de 21. Cada fase foi implementada, testada (`pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm test:e2e`) e commitada isoladamente — ver histórico de commits e `docs/decisions/` (19 ADRs) para o racional de cada decisão não trivial.
+
+## Detalhes técnicos
+
+Daqui em diante o README é técnico — construído fase a fase (20 fases, ver `NEXUS-SPECIFICATION.md`) para demonstrar **React + TypeScript + Full-stack + Monorepo + Platform Engineering + Observability + Realtime + RBAC + Integrations + AI Agents + Testing + Security + Product Design**.
 
 ## Arquitetura
 

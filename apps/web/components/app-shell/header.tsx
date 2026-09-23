@@ -2,8 +2,10 @@
 
 import { Button } from "@nexus/ui";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Bell, HelpCircle, Menu, Plus, Search } from "lucide-react";
+import { Bell, HelpCircle, Menu, Moon, Plus, Search, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useSession } from "../../hooks/use-session";
 import { logout } from "../../lib/auth";
 
@@ -11,6 +13,12 @@ export function Header({ onToggleSidebar }: { onToggleSidebar: () => void }) {
   const { user } = useSession();
   const router = useRouter();
   const queryClient = useQueryClient();
+  const { resolvedTheme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const logoutMutation = useMutation({
     mutationFn: logout,
@@ -54,6 +62,18 @@ export function Header({ onToggleSidebar }: { onToggleSidebar: () => void }) {
       </Button>
       <Button variant="ghost" size="icon" disabled title="Ajuda">
         <HelpCircle className="size-4" />
+      </Button>
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+        aria-label="Alternar tema claro/escuro"
+      >
+        {mounted && resolvedTheme === "light" ? (
+          <Moon className="size-4" />
+        ) : (
+          <Sun className="size-4" />
+        )}
       </Button>
 
       {user && (
